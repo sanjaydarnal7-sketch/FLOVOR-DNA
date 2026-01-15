@@ -1,0 +1,7 @@
+{
+  "name": "Research DNA",
+  "description": "A professional R&D intelligence system that models research topics as data and insights as emergent properties to assist researchers in engineering new ideas and hypotheses.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}

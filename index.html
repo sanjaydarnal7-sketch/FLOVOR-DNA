@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Research DNA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --font-sans: 'Space Grotesk', sans-serif;
+        --font-mono: 'IBM Plex Mono', monospace;
+
+        /* Theme colors */
+        --research-300: theme(colors.cyan.300);
+        --research-400: theme(colors.cyan.400);
+        --research-500: theme(colors.cyan.500);
+        --research-glow: rgba(34, 211, 238, 0.7);
+
+        --flavour-300: theme(colors.indigo.300);
+        --flavour-400: theme(colors.indigo.400);
+        --flavour-500: theme(colors.indigo.500);
+        --flavour-glow: rgba(129, 140, 248, 0.7);
+      }
+      body {
+        font-family: var(--font-sans);
+        background-color: #020617; /* Slate 950 */
+      }
+      .font-sans { font-family: var(--font-sans); }
+      .font-mono { font-family: var(--font-mono); }
+      
+      @keyframes subtle-glow {
+        0%, 100% { box-shadow: 0 0 8px rgba(34, 211, 238, 0.2), inset 0 0 6px rgba(34, 211, 238, 0.1); }
+        50% { box-shadow: 0 0 16px rgba(34, 211, 238, 0.4), inset 0 0 8px rgba(34, 211, 238, 0.2); }
+      }
+      .animate-subtle-glow {
+        animation: subtle-glow 3s ease-in-out infinite;
+      }
+      .research-dna-card-bg {
+        background-image: radial-gradient(at 90% 20%, rgba(20, 184, 166, 0.1), transparent 50%), radial-gradient(at 10% 80%, rgba(34, 211, 238, 0.1), transparent 50%);
+      }
+
+      @keyframes subtle-glow-indigo {
+        0%, 100% { box-shadow: 0 0 8px rgba(129, 140, 248, 0.2), inset 0 0 6px rgba(129, 140, 248, 0.1); }
+        50% { box-shadow: 0 0 16px rgba(129, 140, 248, 0.4), inset 0 0 8px rgba(129, 140, 248, 0.2); }
+      }
+      .animate-subtle-glow-indigo {
+        animation: subtle-glow-indigo 3s ease-in-out infinite;
+      }
+      .flavour-dna-card-bg {
+        background-image: radial-gradient(at 90% 20%, rgba(99, 102, 241, 0.1), transparent 50%), radial-gradient(at 10% 80%, rgba(129, 140, 248, 0.1), transparent 50%);
+      }
+
+      .dashboard-card-bg {
+        background-image: radial-gradient(at 90% 20%, rgba(245, 158, 11, 0.1), transparent 50%), radial-gradient(at 10% 80%, rgba(217, 119, 6, 0.1), transparent 50%);
+      }
+
+      .theme-research {
+        --primary-300: var(--research-300);
+        --primary-400: var(--research-400);
+        --primary-500: var(--research-500);
+        --primary-glow: var(--research-glow);
+      }
+      .theme-flavour {
+        --primary-300: var(--flavour-300);
+        --primary-400: var(--flavour-400);
+        --primary-500: var(--flavour-500);
+        --primary-glow: var(--flavour-glow);
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.36.0",
+    "uuid": "https://esm.sh/uuid@^13.0.0"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
