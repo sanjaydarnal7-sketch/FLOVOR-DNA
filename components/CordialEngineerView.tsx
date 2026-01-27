@@ -1,12 +1,11 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { FlavourBlendProfile, Ingredient, AiAnalysisMode, SavedFlavourBlend } from '../types';
+import { CordialSpecificationProfile, AiAnalysisMode, SavedCordialProduct, Ingredient } from '../types';
 import GlassmorphicCard from './ui/GlassmorphicCard';
 import SciFiSlider from './ui/SciFiSlider';
-import { TrashIcon, WaveformIcon, NetworkIntelligenceIcon, GoogleIcon, LoadIcon } from '../constants';
-import { getFlavourBlendAnalysisStream } from '../services/geminiService';
+import { WaveformIcon, NetworkIntelligenceIcon, GoogleIcon, LoadIcon, TrashIcon, GenerateIcon } from '../constants';
+import { getCordialRecipeStream, generateCordialProfileFromObjective } from '../services/geminiService';
 import IngredientSelectModal from './IngredientSelectModal';
-
 
 const AiModeSelector: React.FC<{
     selectedMode: AiAnalysisMode;
@@ -51,10 +50,11 @@ const SimpleMarkdownRenderer: React.FC<{ content: string }> = ({ content }) => {
                 if (line.startsWith('### ')) {
                     return <h3 key={index} className="text-indigo-300 font-bold mt-4 mb-2 text-lg uppercase tracking-wider">{line.substring(4)}</h3>;
                 }
-                 if (line.startsWith('1. ') || line.startsWith('2. ') || line.startsWith('3. ') || line.startsWith('4. ') || line.startsWith('5. ') || line.startsWith('6. ')) {
-                    const boldEnd = line.indexOf('**', 2);
-                    if (line.startsWith('**') && boldEnd !== -1) {
-                         return <p key={index} className="my-2"><strong className="text-indigo-300 mr-2 font-semibold">{line.substring(2, boldEnd)}</strong>{line.substring(boldEnd + 2)}</p>;
+                 if (line.startsWith('1. ') || line.startsWith('2. ') || line.startsWith('3. ') || line.startsWith('4. ') || line.startsWith('5. ') || line.startsWith('6. ') || line.startsWith('*   **') || line.startsWith('- **')) {
+                    const boldEnd = line.indexOf('**:', 2);
+                    if (boldEnd !== -1) {
+                         const startIdx = line.indexOf('**');
+                         return <p key={index} className="my-2"><strong className="text-indigo-300 mr-2 font-semibold">{line.substring(startIdx + 2, boldEnd)}</strong>{line.substring(boldEnd + 3)}</p>;
                     }
                     const parts = line.split(':');
                      return <p key={index} className="my-2"><strong className="text-indigo-300 mr-2 font-semibold">{parts[0]}:</strong>{parts.slice(1).join(':')}</p>;
@@ -69,26 +69,25 @@ const SimpleMarkdownRenderer: React.FC<{ content: string }> = ({ content }) => {
     );
 };
 
-const HistoryCard: React.FC<{ blend: SavedFlavourBlend, onLoad: () => void, onDelete: () => void, isNew?: boolean }> = ({ blend, onLoad, onDelete, isNew }) => (
+const HistoryCard: React.FC<{ product: SavedCordialProduct, onLoad: () => void, onDelete: () => void, isNew?: boolean }> = ({ product, onLoad, onDelete, isNew }) => (
     <GlassmorphicCard className={`p-4 flex flex-col justify-between gap-3 interactive-card ${isNew ? 'animate-highlight' : ''}`}>
         <div>
-            <h3 className="text-md font-bold text-indigo-300 truncate">{blend.name}</h3>
+            <h3 className="text-md font-bold text-indigo-300 truncate">{product.name}</h3>
             <p className="text-xs text-gray-500 font-mono mt-1">
-                {new Date(blend.savedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                {new Date(product.savedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
             </p>
             <div className="text-xs mt-3 space-y-1 text-gray-400 border-t border-slate-700/50 pt-2">
-                <p>Acidity: {blend.profile.targetAcidity.toFixed(1)}</p>
-                <p>Sweetness: {blend.profile.targetSweetness.toFixed(1)}</p>
-                <p>Complexity: {blend.profile.complexity.toFixed(1)}</p>
+                <p>pH: {product.profile.target_pH.toFixed(2)}</p>
+                <p>Sharpness: {product.profile.sharpness}</p>
+                <p>Sweetness: {product.profile.sweet_body}</p>
             </div>
         </div>
         <div className="flex justify-end gap-2 mt-2">
-            <button onClick={onDelete} className="text-gray-500 hover:text-red-500 p-1.5 rounded-full hover:bg-slate-700/50 transition-colors" aria-label="Delete blend"><TrashIcon className="w-5 h-5"/></button>
-            <button onClick={onLoad} className="text-gray-500 hover:text-indigo-400 p-1.5 rounded-full hover:bg-slate-700/50 transition-colors" aria-label="Load blend"><LoadIcon className="w-5 h-5"/></button>
+            <button onClick={onDelete} className="text-gray-500 hover:text-red-500 p-1.5 rounded-full hover:bg-slate-700/50 transition-colors" aria-label="Delete product"><TrashIcon className="w-5 h-5"/></button>
+            <button onClick={onLoad} className="text-gray-500 hover:text-indigo-400 p-1.5 rounded-full hover:bg-slate-700/50 transition-colors" aria-label="Load product"><LoadIcon className="w-5 h-5"/></button>
         </div>
     </GlassmorphicCard>
 );
-
 
 const PlusIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
@@ -96,33 +95,38 @@ const PlusIcon = (props: React.SVGProps<SVGSVGElement>) => (
     </svg>
 );
 
-const FlavourBuilderView: React.FC = () => {
-    const [profile, setProfile] = useState<FlavourBlendProfile>({
-        targetAcidity: 5,
-        targetSweetness: 5,
-        targetBitterness: 2,
-        targetUmami: 1,
-        targetAromaticIntensity: 5,
-        targetTexture: 5,
-        balance: 5,
-        complexity: 3,
-        objective: 'Create a refreshing and complex non-alcoholic beverage.',
+const CordialEngineerView: React.FC = () => {
+    const [profile, setProfile] = useState<CordialSpecificationProfile>({
+        base_identity: 'Green Apple Cordial',
+        objective: 'Create a crisp, refreshing, and thirst-quenching green apple cordial.',
+        volume_ml: 1000,
+        sharpness: 80,
+        juiciness: 20,
+        dryness: 5,
+        sweet_body: 60,
+        texture: 10,
+        flavour_pop: 10,
+        fresh_cut: 8,
+        aroma_bias: 30, // Leaning fruity
+        target_pH: 3.0,
+        constraints: ['clear liquid', 'non-alcoholic'],
+        explain_for_training: true,
     });
     const [isLoading, setIsLoading] = useState(false);
+    const [isSynthesizing, setIsSynthesizing] = useState(false);
     const [analysis, setAnalysis] = useState('');
+    const [synthesisRationale, setSynthesisRationale] = useState('');
     const [error, setError] = useState<string | null>(null);
     const [analysisMode, setAnalysisMode] = useState<AiAnalysisMode>('standard');
-    const [allIngredients, setAllIngredients] = useState<Ingredient[]>([]);
-
+    const [history, setHistory] = useState<SavedCordialProduct[]>([]);
+    const [recentlySavedId, setRecentlySavedId] = useState<string | null>(null);
     const [composition, setComposition] = useState<{ ingredientId: string; weight: number }[]>([]);
     const [isIngredientModalOpen, setIngredientModalOpen] = useState(false);
-    const [history, setHistory] = useState<SavedFlavourBlend[]>([]);
-    const [recentlySavedId, setRecentlySavedId] = useState<string | null>(null);
-    const [isProfileSynced, setIsProfileSynced] = useState(true);
+    const [allIngredients, setAllIngredients] = useState<Ingredient[]>([]);
 
     useEffect(() => {
         try {
-            const savedHistory = localStorage.getItem('flavourBlendHistory');
+            const savedHistory = localStorage.getItem('cordialHistory');
             if (savedHistory) {
                 setHistory(JSON.parse(savedHistory));
             }
@@ -133,7 +137,7 @@ const FlavourBuilderView: React.FC = () => {
 
     useEffect(() => {
         try {
-            localStorage.setItem('flavourBlendHistory', JSON.stringify(history));
+            localStorage.setItem('cordialHistory', JSON.stringify(history));
         } catch (error) {
             console.error("Failed to save history to localStorage", error);
         }
@@ -157,49 +161,25 @@ const FlavourBuilderView: React.FC = () => {
         .map(item => allIngredients.find(c => c.id === item.ingredientId))
         .filter((c): c is Ingredient => !!c);
 
-    useEffect(() => {
-        const calculateCompositionDNA = () => {
-            if (!isProfileSynced) return;
-            if (compositionIngredients.length === 0) {
-                 setProfile(prev => ({
-                    ...prev,
-                    targetAcidity: 5,
-                    targetSweetness: 5,
-                    targetBitterness: 2,
-                    targetUmami: 1,
-                    targetAromaticIntensity: 5,
-                    targetTexture: 5,
-                }));
-                return;
-            };
+    const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setProfile(prev => ({ ...prev, [name]: Number(value) }));
+    };
 
-            const totalWeight = composition.reduce((sum, item) => sum + item.weight, 0);
-            if (totalWeight === 0) return;
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value, type, checked } = e.target;
+         if (type === 'checkbox') {
+            setProfile(prev => ({ ...prev, [name]: checked }));
+        } else {
+            setProfile(prev => ({ ...prev, [name]: type === 'number' ? Number(value) : value }));
+        }
+    };
 
-            const newProfile: Partial<FlavourBlendProfile> = {};
-
-            const weightedAverage = (key: keyof Ingredient['dna']) => {
-                 return compositionIngredients.reduce((sum, item) => {
-                    const weight = composition.find(c => c.ingredientId === item.id)?.weight || 0;
-                    return sum + (item.dna[key] * weight);
-                }, 0) / totalWeight;
-            };
-            
-            newProfile.targetAcidity = weightedAverage('acids');
-            newProfile.targetSweetness = weightedAverage('sugars');
-            newProfile.targetBitterness = weightedAverage('bitterness');
-            newProfile.targetUmami = weightedAverage('umami');
-            newProfile.targetAromaticIntensity = weightedAverage('aromatics');
-            newProfile.targetTexture = weightedAverage('texture');
-            
-            setProfile(prev => ({
-                ...prev,
-                ...newProfile
-            }));
-        };
-
-        calculateCompositionDNA();
-    }, [composition, compositionIngredients, isProfileSynced]);
+    const handleConstraintsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        const constraintsArray = value.split(',').map(c => c.trim()).filter(c => c);
+        setProfile(prev => ({ ...prev, constraints: constraintsArray }));
+    };
 
     const handleAddIngredient = (ingredient: Ingredient) => {
         if (!composition.some(item => item.ingredientId === ingredient.id)) {
@@ -216,22 +196,29 @@ const FlavourBuilderView: React.FC = () => {
         setComposition(prev => prev.map(item => item.ingredientId === ingredientId ? { ...item, weight: Number(value) } : item));
     };
 
-    const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setProfile(prev => ({ ...prev, [name]: Number(value) }));
-    };
-
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setProfile(prev => ({ ...prev, [name]: value }));
-    };
+    const handleSynthesizeProfile = useCallback(async () => {
+        setIsSynthesizing(true);
+        setSynthesisRationale('');
+        setError(null);
+        try {
+            const result = await generateCordialProfileFromObjective(profile.objective, compositionIngredients);
+            setProfile(prev => ({ ...prev, ...result.profile }));
+            setSynthesisRationale(result.rationale);
+        } catch (err) {
+            console.error(err);
+            const userFriendlyError = 'Failed to synthesize profile from objective. The model may have returned an unexpected format. Please try again.';
+            setError(userFriendlyError);
+        } finally {
+            setIsSynthesizing(false);
+        }
+    }, [profile.objective, compositionIngredients]);
 
     const handleSubmit = useCallback(async () => {
         setIsLoading(true);
         setAnalysis('');
         setError(null);
         try {
-            const stream = await getFlavourBlendAnalysisStream(profile, compositionIngredients, analysisMode);
+            const stream = await getCordialRecipeStream(profile, compositionIngredients, analysisMode);
             for await (const chunk of stream) {
                 setAnalysis(prev => prev + chunk);
             }
@@ -252,38 +239,38 @@ const FlavourBuilderView: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [profile, compositionIngredients, analysisMode]);
+    }, [profile, analysisMode, compositionIngredients]);
 
-    const handleSaveBlend = () => {
-        const blendName = window.prompt("Enter a name for this blend:", profile.objective.substring(0, 30));
-        if (blendName && blendName.trim() !== "") {
-            const newBlend: SavedFlavourBlend = {
+     const handleSaveProduct = () => {
+        const productName = window.prompt("Enter a name for this product:", profile.base_identity);
+        if (productName && productName.trim() !== "") {
+            const newProduct: SavedCordialProduct = {
                 id: uuidv4(),
-                name: blendName.trim(),
-                profile,
-                composition,
-                analysis,
+                name: productName.trim(),
+                profile: profile,
+                composition: composition,
+                recipe: analysis,
                 savedAt: new Date().toISOString(),
             };
-            setHistory(prev => [newBlend, ...prev]);
-            setRecentlySavedId(newBlend.id);
+            setHistory(prev => [newProduct, ...prev]);
+            setRecentlySavedId(newProduct.id);
         }
     };
 
-    const handleLoadBlend = (blendId: string) => {
-        const blendToLoad = history.find(p => p.id === blendId);
-        if (blendToLoad) {
-            setProfile(blendToLoad.profile);
-            setComposition(blendToLoad.composition);
-            setAnalysis(blendToLoad.analysis);
-            setIsProfileSynced(false); // When loading, assume manual override
+    const handleLoadProduct = (productId: string) => {
+        const productToLoad = history.find(p => p.id === productId);
+        if (productToLoad) {
+            setProfile(productToLoad.profile);
+            setComposition(productToLoad.composition || []);
+            setAnalysis(productToLoad.recipe);
+            setSynthesisRationale(''); // Clear previous rationale when loading
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     };
 
-    const handleDeleteBlend = (blendId: string) => {
-        if (window.confirm("Are you sure you want to delete this saved blend?")) {
-            setHistory(prev => prev.filter(p => p.id !== blendId));
+    const handleDeleteProduct = (productId: string) => {
+        if (window.confirm("Are you sure you want to delete this saved product?")) {
+            setHistory(prev => prev.filter(p => p.id !== productId));
         }
     };
 
@@ -295,12 +282,30 @@ const FlavourBuilderView: React.FC = () => {
                 {/* Builder Section */}
                 <div className="flex flex-col gap-6 animate-fade-in">
                     <div className="sticky top-0 pt-4 bg-[#020617]/80 backdrop-blur-sm z-10">
-                        <h2 className="text-3xl font-bold text-gray-100 mb-2 font-display uppercase">Flavour Blender</h2>
-                        <p className="text-gray-400 mb-8">Create an ingredient blend and have the AI predict the sensory outcome.</p>
+                        <h2 className="text-3xl font-bold text-gray-100 mb-2 font-display uppercase">Cordial Engineer</h2>
+                        <p className="text-gray-400 mb-8">Define a target sensory profile. The engine will generate a professional recipe.</p>
                     </div>
 
                     <GlassmorphicCard className="p-6">
-                        <h3 className="text-lg font-semibold text-indigo-300 border-b border-slate-700 pb-2 mb-4 uppercase tracking-wider">Ingredient Blend</h3>
+                        <h3 className="text-lg font-semibold text-indigo-300 border-b border-slate-700 pb-2 mb-4 uppercase tracking-wider">Identity & Objective</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+                            <div>
+                                 <label className="text-sm font-medium text-gray-400 tracking-wider mb-1 block uppercase">Base Identity</label>
+                                <input type="text" name="base_identity" value={profile.base_identity} onChange={handleInputChange} className="w-full bg-slate-800/60 border border-slate-700 rounded-md px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition" />
+                            </div>
+                             <div>
+                                 <label className="text-sm font-medium text-gray-400 tracking-wider mb-1 block uppercase">Volume (mL)</label>
+                                <input type="number" name="volume_ml" value={profile.volume_ml} onChange={handleInputChange} min="50" max="20000" className="w-full bg-slate-800/60 border border-slate-700 rounded-md px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition" />
+                            </div>
+                        </div>
+                         <div className="mt-4">
+                            <label className="text-sm font-medium text-gray-400 tracking-wider mb-1 block uppercase">Objective</label>
+                            <input type="text" name="objective" value={profile.objective} onChange={handleInputChange} className="w-full bg-slate-800/60 border border-slate-700 rounded-md px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition" />
+                        </div>
+                    </GlassmorphicCard>
+
+                     <GlassmorphicCard className="p-6">
+                        <h3 className="text-lg font-semibold text-indigo-300 border-b border-slate-700 pb-2 mb-4 uppercase tracking-wider">Ingredient Composition</h3>
                         <div className="space-y-4">
                             {composition.map(item => {
                                 const ingredient = allIngredients.find(c => c.id === item.ingredientId);
@@ -340,58 +345,65 @@ const FlavourBuilderView: React.FC = () => {
                     </GlassmorphicCard>
 
                     <GlassmorphicCard className="p-6">
-                        <div className="flex justify-between items-center border-b border-slate-700 pb-2 mb-4">
-                            <h3 className="text-lg font-semibold text-indigo-300 uppercase tracking-wider">Core Taste Profile <span className="text-xs text-gray-500 font-mono tracking-widest">{isProfileSynced ? '(AUTO)' : '(MANUAL OVERRIDE)'}</span></h3>
-                            <div className="flex items-center gap-2">
-                                <span className="text-xs font-mono text-gray-400">Sync Profile</span>
-                                <label className="relative inline-flex items-center cursor-pointer">
-                                  <input type="checkbox" checked={isProfileSynced} onChange={(e) => setIsProfileSynced(e.target.checked)} className="sr-only peer" />
-                                  <div className="w-11 h-6 bg-slate-700 rounded-full peer peer-focus:ring-2 peer-focus:ring-indigo-400 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
-                                </label>
-                            </div>
-                        </div>
+                        <h3 className="text-lg font-semibold text-indigo-300 border-b border-slate-700 pb-2 mb-4 uppercase tracking-wider">Core Perception DNA</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
-                            <SciFiSlider label="Acidity" name="targetAcidity" value={Math.round(profile.targetAcidity * 10) / 10} min={0} max={10} onChange={handleSliderChange} disabled={isProfileSynced} />
-                            <SciFiSlider label="Sweetness" name="targetSweetness" value={Math.round(profile.targetSweetness * 10) / 10} min={0} max={10} onChange={handleSliderChange} disabled={isProfileSynced} />
-                            <SciFiSlider label="Bitterness" name="targetBitterness" value={Math.round(profile.targetBitterness * 10) / 10} min={0} max={10} onChange={handleSliderChange} disabled={isProfileSynced} />
-                            <SciFiSlider label="Umami" name="targetUmami" value={Math.round(profile.targetUmami * 10) / 10} min={0} max={10} onChange={handleSliderChange} disabled={isProfileSynced} />
+                            <SciFiSlider label="Sharpness (Malic)" name="sharpness" value={profile.sharpness} min={0} max={100} step={1} onChange={handleSliderChange} />
+                            <SciFiSlider label="Juiciness (Citric)" name="juiciness" value={profile.juiciness} min={0} max={100} step={1} onChange={handleSliderChange} />
+                            <SciFiSlider label="Sweet Body" name="sweet_body" value={profile.sweet_body} min={0} max={100} step={1} onChange={handleSliderChange} />
+                            <SciFiSlider label="Texture" name="texture" value={profile.texture} min={0} max={100} step={1} onChange={handleSliderChange} />
                         </div>
                     </GlassmorphicCard>
 
                     <GlassmorphicCard className="p-6">
-                        <h3 className="text-lg font-semibold text-indigo-300 border-b border-slate-700 pb-2 mb-4 uppercase tracking-wider">Aromatics & Texture</h3>
+                        <h3 className="text-lg font-semibold text-indigo-300 border-b border-slate-700 pb-2 mb-4 uppercase tracking-wider">Fine-Tuning & Aromatics</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
-                             <SciFiSlider label="Aromatic Intensity" name="targetAromaticIntensity" value={profile.targetAromaticIntensity} min={0} max={10} onChange={handleSliderChange} disabled={isProfileSynced} />
-                             <SciFiSlider label="Target Texture" name="targetTexture" value={profile.targetTexture} min={0} max={10} onChange={handleSliderChange} disabled={isProfileSynced} />
+                            <SciFiSlider label="Dryness (Tartaric)" name="dryness" value={profile.dryness} min={0} max={30} step={1} onChange={handleSliderChange} />
+                             <SciFiSlider label="Flavour Pop (Salt)" name="flavour_pop" value={profile.flavour_pop} min={0} max={20} step={1} onChange={handleSliderChange} />
+                             <SciFiSlider label="Fresh Cut Illusion" name="fresh_cut" value={profile.fresh_cut} min={0} max={15} step={1} onChange={handleSliderChange} />
+                             <SciFiSlider label="Aroma Bias" name="aroma_bias" value={profile.aroma_bias} min={-50} max={50} step={1} onChange={handleSliderChange} minLabel="Herbal" maxLabel="Fruity" />
                         </div>
                     </GlassmorphicCard>
                     
                      <GlassmorphicCard className="p-6">
-                        <h3 className="text-lg font-semibold text-indigo-300 border-b border-slate-700 pb-2 mb-4 uppercase tracking-wider">Conceptual Goals</h3>
+                        <h3 className="text-lg font-semibold text-indigo-300 border-b border-slate-700 pb-2 mb-4 uppercase tracking-wider">Technical Parameters & AI</h3>
                         <div className="space-y-4">
-                             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
-                                 <SciFiSlider label="Balance" name="balance" value={profile.balance} min={0} max={10} onChange={handleSliderChange} />
-                                <SciFiSlider label="Complexity" name="complexity" value={profile.complexity} min={0} max={10} onChange={handleSliderChange} />
-                            </div>
+                            <SciFiSlider label="Target pH" name="target_pH" value={profile.target_pH} min={2.6} max={3.4} step={0.01} onChange={handleSliderChange} />
                             <div>
-                                 <label className="text-sm font-medium text-gray-400 tracking-wider mb-1 block uppercase">Objective</label>
-                                <input type="text" name="objective" value={profile.objective} onChange={handleInputChange} className="w-full bg-slate-800/60 border border-slate-700 rounded-md px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition" />
+                                <label className="text-sm font-medium text-gray-400 tracking-wider mb-1 block uppercase">Constraints</label>
+                                <input type="text" name="constraints" value={profile.constraints.join(', ')} onChange={handleConstraintsChange} placeholder="e.g., clear liquid, non-alcoholic" className="w-full bg-slate-800/60 border border-slate-700 rounded-md px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition" />
+                            </div>
+                             <div className="flex items-center gap-3">
+                                <input type="checkbox" id="explain" name="explain_for_training" checked={profile.explain_for_training} onChange={handleInputChange} className="w-4 h-4 text-indigo-600 bg-gray-700 border-gray-600 rounded focus:ring-indigo-500" />
+                                <label htmlFor="explain" className="text-sm text-gray-300">Include educational explanations in output</label>
                             </div>
                             <AiModeSelector selectedMode={analysisMode} onSelectMode={setAnalysisMode} />
                         </div>
                     </GlassmorphicCard>
 
-                    <div className="pb-8">
-                         <button onClick={handleSubmit} disabled={isLoading || composition.length === 0} className="w-full flex items-center justify-center gap-3 bg-indigo-500/10 border border-indigo-500/50 text-indigo-300 font-bold py-3 px-6 rounded-lg hover:bg-indigo-500/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed animate-subtle-glow-indigo">
+                    <div className="pb-8 space-y-4">
+                        <button onClick={handleSynthesizeProfile} disabled={isLoading || isSynthesizing} className="w-full flex items-center justify-center gap-3 bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 font-semibold py-3 px-6 rounded-lg hover:bg-indigo-500/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                            {isSynthesizing ? (
+                                <>
+                                    <GenerateIcon className="w-6 h-6 animate-spin" />
+                                    <span>SYNTHESIZING PROFILE...</span>
+                                </>
+                            ) : (
+                                <>
+                                    <GenerateIcon className="w-6 h-6" />
+                                    <span>SYNTHESIZE PROFILE FROM OBJECTIVE</span>
+                                </>
+                            )}
+                        </button>
+                         <button onClick={handleSubmit} disabled={isLoading || isSynthesizing} className="w-full flex items-center justify-center gap-3 bg-indigo-500/10 border border-indigo-500/50 text-indigo-300 font-bold py-3 px-6 rounded-lg hover:bg-indigo-500/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed animate-subtle-glow-indigo">
                             {isLoading ? (
                                 <>
                                     <WaveformIcon className="w-6 h-6 animate-pulse" />
-                                    <span>ANALYZING FLAVOUR...</span>
+                                    <span>ENGINEERING RECIPE...</span>
                                 </>
                             ) : (
                                  <>
                                     <WaveformIcon className="w-6 h-6" />
-                                    <span>RUN FLAVOUR ANALYSIS</span>
+                                    <span>GENERATE RECIPE</span>
                                 </>
                             )}
                         </button>
@@ -404,49 +416,59 @@ const FlavourBuilderView: React.FC = () => {
                          <div className="flex-shrink-0 flex justify-between items-center border-b border-slate-800 -mx-6 px-6 pb-4 mb-4">
                             <h2 className="text-2xl font-bold text-gray-100 uppercase tracking-wider">Perception Engine Output</h2>
                             <button 
-                                onClick={handleSaveBlend} 
+                                onClick={handleSaveProduct} 
                                 disabled={!analysis || isLoading}
                                 className="bg-indigo-500/10 border border-indigo-500/50 text-indigo-300 font-semibold py-1.5 px-4 rounded-lg hover:bg-indigo-500/20 transition-colors disabled:opacity-30 disabled:cursor-not-allowed text-sm"
                             >
-                                Save Blend
+                                Save Product
                             </button>
                         </div>
-                         <div className="overflow-y-auto flex-shrink-0" style={{maxHeight: "35vh"}}>
+                        <div className="overflow-y-auto flex-shrink-0" style={{maxHeight: "35vh"}}>
                             {error && (
                                 <div className="bg-red-900/50 border border-red-500/50 text-red-300 p-4 rounded-lg my-4">
                                     <h4 className="font-bold">Analysis Error</h4>
                                     <p className="text-sm mt-1">{error}</p>
                                 </div>
                             )}
-                            {!isLoading && !analysis && !error && (
-                                <div className="text-center text-gray-600 pt-16 flex flex-col items-center justify-center h-full">
-                                    <WaveformIcon className="w-20 h-20 mx-auto mb-4 opacity-10" />
-                                    <p className="font-semibold text-lg">Analysis Awaiting Input</p>
-                                    <p>Define a profile and run the engine.</p>
+                            
+                            {synthesisRationale && (
+                                <div className="mb-6 p-4 bg-slate-900/60 rounded-lg border border-slate-700/80">
+                                    <SimpleMarkdownRenderer content={synthesisRationale} />
+                                    {isSynthesizing && <div className="inline-block w-2 h-2 ml-1 bg-indigo-300 rounded-full animate-pulse"></div>}
                                 </div>
                             )}
-                            <div className="mt-4">
+
+                            {!isLoading && !analysis && !error && !synthesisRationale && (
+                                <div className="text-center text-gray-600 pt-16 flex flex-col items-center justify-center h-full">
+                                    <WaveformIcon className="w-20 h-20 mx-auto mb-4 opacity-10" />
+                                    <p className="font-semibold text-lg">Recipe Awaiting Specification</p>
+                                    <p>Define a profile and generate the recipe.</p>
+                                </div>
+                            )}
+                            <div>
                                 <SimpleMarkdownRenderer content={analysis} />
                                 {isLoading && <div className="inline-block w-2 h-2 ml-1 bg-indigo-300 rounded-full animate-pulse"></div>}
                             </div>
                         </div>
+
                         <div className="border-t border-slate-700 my-4 -mx-6 flex-shrink-0"></div>
+
                         <div className="flex-grow flex flex-col min-h-0">
-                            <h3 className="text-lg font-bold text-gray-100 mb-4 font-display uppercase flex-shrink-0">Saved Blends</h3>
+                            <h3 className="text-lg font-bold text-gray-100 mb-4 font-display uppercase flex-shrink-0">Saved Products</h3>
                             <div className="flex-grow overflow-y-auto pr-2">
                                 {history.length === 0 ? (
                                     <div className="text-center text-gray-500 py-8">
-                                        No saved blends yet.
+                                        No saved products yet.
                                     </div>
                                 ) : (
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        {history.map(blend => (
+                                        {history.map(product => (
                                             <HistoryCard 
-                                                key={blend.id} 
-                                                blend={blend}
-                                                onLoad={() => handleLoadBlend(blend.id)}
-                                                onDelete={() => handleDeleteBlend(blend.id)}
-                                                isNew={blend.id === recentlySavedId}
+                                                key={product.id} 
+                                                product={product}
+                                                onLoad={() => handleLoadProduct(product.id)}
+                                                onDelete={() => handleDeleteProduct(product.id)}
+                                                isNew={product.id === recentlySavedId}
                                             />
                                         ))}
                                     </div>
@@ -456,8 +478,8 @@ const FlavourBuilderView: React.FC = () => {
                      </GlassmorphicCard>
                 </div>
             </div>
-            
-            {isIngredientModalOpen && (
+
+             {isIngredientModalOpen && (
                 <IngredientSelectModal
                     isOpen={isIngredientModalOpen}
                     onClose={() => setIngredientModalOpen(false)}
@@ -471,4 +493,4 @@ const FlavourBuilderView: React.FC = () => {
     );
 };
 
-export default FlavourBuilderView;
+export default CordialEngineerView;

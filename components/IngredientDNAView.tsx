@@ -7,32 +7,43 @@ import IngredientModal from './IngredientModal';
 import SciFiSlider from './ui/SciFiSlider';
 import GenerateIngredientModal from './GenerateIngredientModal';
 import { generateIngredientProfile } from '../services/geminiService';
+import RadarChart from './ui/RadarChart';
 
 const IngredientCard: React.FC<{ 
     ingredient: Ingredient,
     onEdit: (ingredient: Ingredient) => void,
     onDelete: (id: string) => void,
-}> = ({ ingredient, onEdit, onDelete }) => (
-  <GlassmorphicCard className="p-4 flex flex-col gap-2 transition-all duration-300 hover:border-indigo-400/50 group relative border border-slate-800/50 hover:bg-slate-900/60">
-    <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-        <button onClick={() => onEdit(ingredient)} className="text-gray-500 hover:text-indigo-400 p-1.5 rounded-full hover:bg-slate-700/50 transition-colors"><PencilIcon className="w-5 h-5"/></button>
-        <button onClick={() => onDelete(ingredient.id)} className="text-gray-500 hover:text-red-500 p-1.5 rounded-full hover:bg-slate-700/50 transition-colors"><TrashIcon className="w-5 h-5"/></button>
-    </div>
+}> = ({ ingredient, onEdit, onDelete }) => {
+    const chartData = [
+        { label: 'ACID', value: ingredient.dna.acids },
+        { label: 'SWEET', value: ingredient.dna.sugars },
+        { label: 'BITTER', value: ingredient.dna.bitterness },
+        { label: 'AROMA', value: ingredient.dna.aromatics },
+        { label: 'UMAMI', value: ingredient.dna.umami },
+        { label: 'TEX', value: ingredient.dna.texture },
+    ];
     
-    <h3 className="text-lg font-bold text-indigo-300 pr-12 font-sans">{ingredient.name}</h3>
-    <p className="text-xs text-gray-500 uppercase tracking-widest font-mono">{ingredient.type} / {ingredient.subcategory}</p>
-    <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm mt-2 text-gray-400">
-        <p className="font-mono"><span className="font-sans font-semibold text-gray-500">Acids:</span> {ingredient.dna.acids}</p>
-        <p className="font-mono"><span className="font-sans font-semibold text-gray-500">Sugars:</span> {ingredient.dna.sugars}</p>
-        <p className="font-mono"><span className="font-sans font-semibold text-gray-500">Aromatics:</span> {ingredient.dna.aromatics}</p>
-        <p className="font-mono"><span className="font-sans font-semibold text-gray-500">Umami:</span> {ingredient.dna.umami}</p>
-        <p className="font-mono col-span-2"><span className="font-sans font-semibold text-gray-500">Season:</span> <span className="capitalize">{ingredient.seasonality}</span></p>
-    </div>
-    <div className="mt-2 flex flex-wrap gap-1">
-        <span className="bg-indigo-900/50 border border-indigo-700/30 text-indigo-300 text-xs font-medium px-2 py-0.5 rounded-full font-mono">{ingredient.archetype}</span>
-    </div>
-  </GlassmorphicCard>
-);
+    return (
+      <GlassmorphicCard className="p-4 flex flex-col gap-2 group relative interactive-card">
+        <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+            <button onClick={() => onEdit(ingredient)} className="text-gray-500 hover:text-indigo-400 p-1.5 rounded-full bg-slate-900/50 hover:bg-slate-800/80 transition-colors"><PencilIcon className="w-5 h-5"/></button>
+            <button onClick={() => onDelete(ingredient.id)} className="text-gray-500 hover:text-red-500 p-1.5 rounded-full bg-slate-900/50 hover:bg-slate-800/80 transition-colors"><TrashIcon className="w-5 h-5"/></button>
+        </div>
+        
+        <h3 className="text-lg font-bold text-indigo-300 pr-16">{ingredient.name}</h3>
+        <p className="text-xs text-gray-500 uppercase tracking-widest font-mono -mt-1">{ingredient.type} / {ingredient.subcategory}</p>
+        
+        <div className="flex-grow flex items-center justify-center my-2">
+            <RadarChart data={chartData} color="var(--flavour-400)" size={140} />
+        </div>
+
+        <div className="mt-auto flex justify-between items-center text-xs text-gray-500 font-mono">
+            <span className="bg-indigo-900/50 border border-indigo-700/30 text-indigo-300 font-medium px-2 py-0.5 rounded-full">{ingredient.archetype}</span>
+            <span className="capitalize">{ingredient.seasonality}</span>
+        </div>
+      </GlassmorphicCard>
+    );
+};
 
 const ChevronDownIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" {...props}>
@@ -199,19 +210,19 @@ const IngredientDNAView: React.FC = () => {
   });
 
   return (
-    <div className="animate-fade-in">
-      <h2 className="text-3xl font-bold text-gray-100 mb-2 font-sans">Ingredient DNA Database</h2>
-      <p className="text-gray-400 mb-6">Explore, search, and manage the sensory profiles of raw materials.</p>
+    <div className="animate-fade-in theme-flavour">
+      <h2 className="text-3xl font-bold text-gray-100 mb-2 font-display uppercase">Ingredient DNA Database</h2>
+      <p className="text-gray-400 mb-8">Explore, search, and manage the sensory profiles of raw materials.</p>
       
       <GlassmorphicCard className="p-4 mb-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 items-end">
             <div className="md:col-span-2 lg:col-span-1">
-                <label className="block text-xs text-gray-400 mb-1 font-semibold tracking-wider uppercase font-mono">Search</label>
-                <input type="text" placeholder="e.g., Alphonso Mango" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full bg-slate-800/60 border border-slate-700 rounded-md px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition" />
+                <label className="block text-xs text-gray-400 mb-1 font-semibold tracking-wider uppercase">Search</label>
+                <input type="text" placeholder="e.g., Alphonso Mango" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full bg-slate-800 border border-slate-700 rounded-md px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition" />
             </div>
             <div className="relative" ref={typeSelectorRef}>
-                <label className="block text-xs text-gray-400 mb-1 font-semibold tracking-wider uppercase font-mono">Type</label>
-                <button onClick={() => setIsTypeSelectorOpen(prev => !prev)} className="w-full bg-slate-800/60 border border-slate-700 rounded-md px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400 transition text-left flex justify-between items-center">
+                <label className="block text-xs text-gray-400 mb-1 font-semibold tracking-wider uppercase">Type</label>
+                <button onClick={() => setIsTypeSelectorOpen(prev => !prev)} className="w-full bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400 transition text-left flex justify-between items-center">
                     <span className="truncate">{filters.type.length > 0 ? `${filters.type.length} selected` : 'All Types'}</span>
                     <ChevronDownIcon className={`w-4 h-4 transition-transform ${isTypeSelectorOpen ? 'rotate-180' : ''}`} />
                 </button>
@@ -226,8 +237,8 @@ const IngredientDNAView: React.FC = () => {
                 )}
             </div>
              <div className="relative" ref={archetypeSelectorRef}>
-                <label className="block text-xs text-gray-400 mb-1 font-semibold tracking-wider uppercase font-mono">Archetype</label>
-                <button onClick={() => setIsArchetypeSelectorOpen(prev => !prev)} className="w-full bg-slate-800/60 border border-slate-700 rounded-md px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400 transition text-left flex justify-between items-center">
+                <label className="block text-xs text-gray-400 mb-1 font-semibold tracking-wider uppercase">Archetype</label>
+                <button onClick={() => setIsArchetypeSelectorOpen(prev => !prev)} className="w-full bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400 transition text-left flex justify-between items-center">
                     <span className="truncate">{filters.archetype.length > 0 ? `${filters.archetype.length} selected` : 'All Archetypes'}</span>
                     <ChevronDownIcon className={`w-4 h-4 transition-transform ${isArchetypeSelectorOpen ? 'rotate-180' : ''}`} />
                 </button>
@@ -244,16 +255,16 @@ const IngredientDNAView: React.FC = () => {
              <div className="flex gap-2">
                 <button onClick={resetFilters} className="w-full border border-slate-700 text-gray-400 font-semibold py-2 px-4 rounded-lg hover:bg-slate-800 hover:text-white transition-colors">Reset</button>
                 <button onClick={() => handleOpenModal()} className="w-full border border-slate-700 text-gray-400 font-semibold py-2 px-4 rounded-lg hover:bg-slate-800 hover:text-white transition-colors whitespace-nowrap">+ Add</button>
-                <button onClick={() => setIsGenerateModalOpen(true)} className="w-full flex items-center justify-center gap-2 bg-indigo-500/10 border border-indigo-500 text-indigo-300 font-bold py-2 px-4 rounded-lg hover:bg-indigo-500/20 transition-colors whitespace-nowrap animate-subtle-glow"><GenerateIcon className="w-5 h-5"/> Gen</button>
+                <button onClick={() => setIsGenerateModalOpen(true)} className="w-full flex items-center justify-center gap-2 bg-indigo-500/10 border border-indigo-500 text-indigo-300 font-bold py-2 px-4 rounded-lg hover:bg-indigo-500/20 transition-colors whitespace-nowrap animate-subtle-glow-indigo"><GenerateIcon className="w-5 h-5"/> Gen</button>
             </div>
         </div>
         
         <div className="mt-4">
-            <button onClick={() => setIsNumericFilterOpen(prev => !prev)} className="text-sm text-indigo-300 hover:text-indigo-200 flex items-center gap-2 cursor-pointer font-semibold">
+            <button onClick={() => setIsNumericFilterOpen(prev => !prev)} className="text-sm text-indigo-300 hover:text-indigo-200 flex items-center gap-2 cursor-pointer font-semibold uppercase tracking-wider">
                 Numerical DNA Filters <ChevronDownIcon className={`w-4 h-4 transition-transform ${isNumericFilterOpen ? 'rotate-180' : ''}`} />
             </button>
             {isNumericFilterOpen && (
-                <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-4 p-4 bg-slate-900/40 rounded-lg border border-slate-800/50">
+                <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-4 p-4 bg-slate-900/80 rounded-lg border border-slate-800/50">
                     <SciFiSlider label="Acids" name="acids" value={filters.acids.max} min={filters.acids.min} max={10} onChange={(e) => handleRangeChange(e, 'max')} />
                     <SciFiSlider label="" name="acids" value={filters.acids.min} min={0} max={filters.acids.max} onChange={(e) => handleRangeChange(e, 'min')} />
                     

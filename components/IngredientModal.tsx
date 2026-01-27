@@ -33,6 +33,10 @@ const emptyIngredient: Omit<Ingredient, 'id'> = {
     seasonality: '',
     state: 'fresh',
     dna: emptyDNA,
+    key_compounds: [],
+    potential_contaminants: [],
+    preservatives: [],
+    culinary_applications: [],
 };
 
 const IngredientModal: React.FC<IngredientModalProps> = ({ ingredient, onClose, onSave }) => {
@@ -46,6 +50,12 @@ const IngredientModal: React.FC<IngredientModalProps> = ({ ingredient, onClose, 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+  };
+  
+  const handleArrayInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    const valuesArray = value.split(',').map(item => item.trim()).filter(Boolean);
+    setFormData(prev => ({ ...prev, [name]: valuesArray }));
   };
 
   const handleDnaSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,25 +88,25 @@ const IngredientModal: React.FC<IngredientModalProps> = ({ ingredient, onClose, 
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 flex items-center justify-center p-4 animate-fade-in" onClick={onClose}>
       <GlassmorphicCard className="w-full max-w-4xl max-h-[90vh] overflow-y-auto" onClick={handleModalContentClick}>
         <form onSubmit={handleSubmit} className="p-6">
-          <h2 className="text-2xl font-bold text-gray-100 mb-6">{isEditing ? 'Edit Ingredient DNA' : 'Add New Ingredient'}</h2>
+          <h2 className="text-2xl font-bold text-gray-100 mb-6 uppercase tracking-wider">{isEditing ? 'Edit Ingredient DNA' : 'Add New Ingredient'}</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
             
             <div className="md:col-span-2 space-y-4">
-              <h3 className="font-semibold text-indigo-300">Primary Information</h3>
+              <h3 className="font-semibold text-indigo-300 uppercase tracking-wider">Primary Information</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <input name="name" value={formData.name} onChange={handleInputChange} placeholder="Ingredient Name" required className="w-full bg-slate-800/60 border border-slate-700 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400" />
-                <input name="type" value={formData.type} onChange={handleInputChange} placeholder="Type (e.g., fruit, vegetable)" className="w-full bg-slate-800/60 border border-slate-700 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400" />
-                <input name="subcategory" value={formData.subcategory} onChange={handleInputChange} placeholder="Subcategory (e.g., citrus)" className="w-full bg-slate-800/60 border border-slate-700 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400" />
-                <input name="archetype" value={formData.archetype} onChange={handleInputChange} placeholder="Archetype (e.g., Citrus Zest)" className="w-full bg-slate-800/60 border border-slate-700 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400" />
-                 <input name="origin" value={formData.origin} onChange={handleInputChange} placeholder="Origin (e.g., India)" className="w-full bg-slate-800/60 border border-slate-700 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400" />
-                <input name="seasonality" value={formData.seasonality} onChange={handleInputChange} placeholder="Seasonality (e.g., Summer)" className="w-full bg-slate-800/60 border border-slate-700 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+                <input name="name" value={formData.name} onChange={handleInputChange} placeholder="Ingredient Name" required className="w-full bg-slate-800 border border-slate-700 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+                <input name="type" value={formData.type} onChange={handleInputChange} placeholder="Type (e.g., fruit, vegetable)" className="w-full bg-slate-800 border border-slate-700 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+                <input name="subcategory" value={formData.subcategory} onChange={handleInputChange} placeholder="Subcategory (e.g., citrus)" className="w-full bg-slate-800 border border-slate-700 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+                <input name="archetype" value={formData.archetype} onChange={handleInputChange} placeholder="Archetype (e.g., Citrus Zest)" className="w-full bg-slate-800 border border-slate-700 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+                 <input name="origin" value={formData.origin} onChange={handleInputChange} placeholder="Origin (e.g., India)" className="w-full bg-slate-800 border border-slate-700 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+                <input name="seasonality" value={formData.seasonality} onChange={handleInputChange} placeholder="Seasonality (e.g., Summer)" className="w-full bg-slate-800 border border-slate-700 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400" />
               </div>
             </div>
 
             <div className="md:col-span-2 space-y-4">
-               <h3 className="font-semibold text-indigo-300">Flavour DNA Profile</h3>
-               <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-4 p-4 bg-slate-900/40 rounded-lg border border-slate-800/50">
+               <h3 className="font-semibold text-indigo-300 uppercase tracking-wider">Flavour DNA Profile</h3>
+               <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-4 p-4 bg-slate-900/60 rounded-lg border border-slate-800/50">
                     <SciFiSlider label="Acids" name="acids" value={formData.dna.acids} min={0} max={10} onChange={handleDnaSliderChange} />
                     <SciFiSlider label="Sugars" name="sugars" value={formData.dna.sugars} min={0} max={10} onChange={handleDnaSliderChange} />
                     <SciFiSlider label="Bitterness" name="bitterness" value={formData.dna.bitterness} min={0} max={10} onChange={handleDnaSliderChange} />
@@ -109,8 +119,71 @@ const IngredientModal: React.FC<IngredientModalProps> = ({ ingredient, onClose, 
                </div>
             </div>
 
-            <div className="md:col-span-2">
-                <textarea name="notes" value={formData.notes} onChange={handleInputChange} placeholder="Sensory notes..." rows={3} className="w-full bg-slate-800/60 border border-slate-700 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400"></textarea>
+            <div className="md:col-span-2 space-y-4">
+                <h3 className="font-semibold text-indigo-300 uppercase tracking-wider">Chemical Profile</h3>
+                <div className="space-y-4 p-4 bg-slate-900/60 rounded-lg border border-slate-800/50">
+                    <div>
+                        <label className="text-sm font-medium text-gray-400 tracking-wider mb-1 block uppercase">Key Compounds</label>
+                        <textarea 
+                            name="key_compounds" 
+                            value={(formData.key_compounds || []).join(', ')} 
+                            onChange={handleArrayInputChange} 
+                            placeholder="Comma-separated, e.g., Vitamin C, Citric Acid, Limonene" 
+                            rows={2} 
+                            className="w-full bg-slate-800 border border-slate-700 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                        />
+                    </div>
+                    <div>
+                        <label className="text-sm font-medium text-gray-400 tracking-wider mb-1 block uppercase">Potential Contaminants</label>
+                        <textarea 
+                            name="potential_contaminants" 
+                            value={(formData.potential_contaminants || []).join(', ')} 
+                            onChange={handleArrayInputChange} 
+                            placeholder="Comma-separated, e.g., Chlorpyrifos, Fludioxonil" 
+                            rows={2} 
+                            className="w-full bg-slate-800 border border-slate-700 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                        />
+                    </div>
+                     <div>
+                        <label className="text-sm font-medium text-gray-400 tracking-wider mb-1 block uppercase">Preservatives</label>
+                        <textarea 
+                            name="preservatives" 
+                            value={(formData.preservatives || []).join(', ')} 
+                            onChange={handleArrayInputChange} 
+                            placeholder="Comma-separated, e.g., Sodium Benzoate, Potassium Sorbate" 
+                            rows={2} 
+                            className="w-full bg-slate-800 border border-slate-700 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                        />
+                    </div>
+                </div>
+            </div>
+            
+             <div className="md:col-span-2 space-y-4">
+                <h3 className="font-semibold text-indigo-300 uppercase tracking-wider">Applications & Notes</h3>
+                <div className="space-y-4 p-4 bg-slate-900/60 rounded-lg border border-slate-800/50">
+                    <div>
+                        <label className="text-sm font-medium text-gray-400 tracking-wider mb-1 block uppercase">Culinary Applications</label>
+                        <textarea 
+                            name="culinary_applications" 
+                            value={(formData.culinary_applications || []).join(', ')} 
+                            onChange={handleArrayInputChange} 
+                            placeholder="Comma-separated, e.g., Cocktails, Sauces, Desserts" 
+                            rows={2} 
+                            className="w-full bg-slate-800 border border-slate-700 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                        />
+                    </div>
+                     <div>
+                        <label className="text-sm font-medium text-gray-400 tracking-wider mb-1 block uppercase">Sensory Notes</label>
+                        <textarea 
+                            name="notes" 
+                            value={formData.notes} 
+                            onChange={handleInputChange} 
+                            placeholder="Detailed sensory description..." 
+                            rows={3} 
+                            className="w-full bg-slate-800 border border-slate-700 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                        />
+                    </div>
+                </div>
             </div>
           </div>
           

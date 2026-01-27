@@ -1,0 +1,603 @@
+
+[
+  {
+    "primaryCategory": "BRASSICAS & MUSTARD FAMILY",
+    "subCategory": "Brassica",
+    "cropName": "Arugula",
+    "variety": "Standard",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "BRASSICAS & MUSTARD FAMILY",
+    "subCategory": "Brassica",
+    "cropName": "Wild rocket",
+    "variety": "Wild type",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "BRASSICAS & MUSTARD FAMILY",
+    "subCategory": "Brassica",
+    "cropName": "Wasabi arugula",
+    "variety": "Wasabi type",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "BRASSICAS & MUSTARD FAMILY",
+    "subCategory": "Brassica",
+    "cropName": "Broccoli",
+    "variety": "Calabrese",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "BRASSICAS & MUSTARD FAMILY",
+    "subCategory": "Brassica",
+    "cropName": "Kale",
+    "variety": "Red Russian",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "BRASSICAS & MUSTARD FAMILY",
+    "subCategory": "Brassica",
+    "cropName": "Red cabbage",
+    "variety": "Baby leaf",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "BRASSICAS & MUSTARD FAMILY",
+    "subCategory": "Brassica",
+    "cropName": "Pak choy",
+    "variety": "Green / White stem",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "BRASSICAS & MUSTARD FAMILY",
+    "subCategory": "Brassica",
+    "cropName": "Tatsoi",
+    "variety": "Asian type",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "BRASSICAS & MUSTARD FAMILY",
+    "subCategory": "Brassica",
+    "cropName": "Komatsuna",
+    "variety": "Japanese mustard",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "BRASSICAS & MUSTARD FAMILY",
+    "subCategory": "Brassica",
+    "cropName": "Mizuna",
+    "variety": "Green / Purple",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "BRASSICAS & MUSTARD FAMILY",
+    "subCategory": "Brassica",
+    "cropName": "Mibuna",
+    "variety": "Kyoto variety",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "BRASSICAS & MUSTARD FAMILY",
+    "subCategory": "Mustard",
+    "cropName": "Mustard greens",
+    "variety": "Yellow",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "BRASSICAS & MUSTARD FAMILY",
+    "subCategory": "Mustard",
+    "cropName": "Mustard greens",
+    "variety": "Black",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "BRASSICAS & MUSTARD FAMILY",
+    "subCategory": "Mustard",
+    "cropName": "Mustard greens",
+    "variety": "Red",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "BRASSICAS & MUSTARD FAMILY",
+    "subCategory": "Mustard",
+    "cropName": "Mustard greens",
+    "variety": "Frill",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "BRASSICAS & MUSTARD FAMILY",
+    "subCategory": "Brassica",
+    "cropName": "Turnip greens",
+    "variety": "Leaf type",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "BRASSICAS & MUSTARD FAMILY",
+    "subCategory": "Brassica",
+    "cropName": "Kohlrabi greens",
+    "variety": "Leaf type",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "BRASSICAS & MUSTARD FAMILY",
+    "subCategory": "Brassica",
+    "cropName": "Watercress",
+    "variety": "True watercress",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "BRASSICAS & MUSTARD FAMILY",
+    "subCategory": "Brassica",
+    "cropName": "Rapini",
+    "variety": "Broccoli rabe",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "ROOT GREENS",
+    "subCategory": "Root tops",
+    "cropName": "Radish",
+    "variety": "Pink",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf"
+  },
+  {
+    "primaryCategory": "ROOT GREENS",
+    "subCategory": "Root tops",
+    "cropName": "Radish",
+    "variety": "Purple",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf"
+  },
+  {
+    "primaryCategory": "ROOT GREENS",
+    "subCategory": "Root tops",
+    "cropName": "Radish",
+    "variety": "Daikon",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf"
+  },
+  {
+    "primaryCategory": "ROOT GREENS",
+    "subCategory": "Root tops",
+    "cropName": "Beet",
+    "variety": "All types",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf"
+  },
+  {
+    "primaryCategory": "ROOT GREENS",
+    "subCategory": "Root tops",
+    "cropName": "Carrot",
+    "variety": "All types",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf"
+  },
+  {
+    "primaryCategory": "ROOT GREENS",
+    "subCategory": "Root tops",
+    "cropName": "Turnip",
+    "variety": "All types",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf"
+  },
+  {
+    "primaryCategory": "ROOT GREENS",
+    "subCategory": "Root tops",
+    "cropName": "Celery",
+    "variety": "Leaf",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf"
+  },
+  {
+    "primaryCategory": "ROOT GREENS",
+    "subCategory": "Root tops",
+    "cropName": "Fennel",
+    "variety": "Leaf",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf"
+  },
+  {
+    "primaryCategory": "ROOT GREENS",
+    "subCategory": "Allium greens",
+    "cropName": "Onion",
+    "variety": "Greens",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf"
+  },
+  {
+    "primaryCategory": "ROOT GREENS",
+    "subCategory": "Allium greens",
+    "cropName": "Spring onion",
+    "variety": "Greens",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf"
+  },
+  {
+    "primaryCategory": "ROOT GREENS",
+    "subCategory": "Allium greens",
+    "cropName": "Leek",
+    "variety": "Greens",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf"
+  },
+  {
+    "primaryCategory": "ROOT GREENS",
+    "subCategory": "Allium greens",
+    "cropName": "Garlic",
+    "variety": "Greens",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf"
+  },
+  {
+    "primaryCategory": "ROOT GREENS",
+    "subCategory": "Allium greens",
+    "cropName": "Shallot",
+    "variety": "Greens",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf"
+  },
+  {
+    "primaryCategory": "LEAFY GREENS",
+    "subCategory": "Leafy",
+    "cropName": "Spinach",
+    "variety": "All types",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "LEAFY GREENS",
+    "subCategory": "Leafy",
+    "cropName": "Swiss chard",
+    "variety": "All colours",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "LEAFY GREENS",
+    "subCategory": "Leafy",
+    "cropName": "Amaranth",
+    "variety": "Red",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "LEAFY GREENS",
+    "subCategory": "Leafy",
+    "cropName": "Amaranth",
+    "variety": "Green",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "LEAFY GREENS",
+    "subCategory": "Leafy",
+    "cropName": "Sea beet",
+    "variety": "Wild beet",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "LEAFY GREENS",
+    "subCategory": "Leafy",
+    "cropName": "Purslane",
+    "variety": "Green",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "LEAFY GREENS",
+    "subCategory": "Leafy",
+    "cropName": "Chicory",
+    "variety": "Leaf types",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "LEAFY GREENS",
+    "subCategory": "Leafy",
+    "cropName": "Endive",
+    "variety": "Curly / Flat",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "LEAFY GREENS",
+    "subCategory": "Leafy",
+    "cropName": "Frisée",
+    "variety": "Curly leaf",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "LEAFY GREENS",
+    "subCategory": "Leafy",
+    "cropName": "Dandelion",
+    "variety": "Leaf",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "LEAFY GREENS",
+    "subCategory": "Leafy",
+    "cropName": "Sorrel",
+    "variety": "Green",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "LEAFY GREENS",
+    "subCategory": "Leafy",
+    "cropName": "Buckwheat",
+    "variety": "Leaf",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "LEAFY GREENS",
+    "subCategory": "Leafy",
+    "cropName": "Mache",
+    "variety": "Corn salad",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "LEAFY GREENS",
+    "subCategory": "Leafy",
+    "cropName": "Lettuce",
+    "variety": "All baby leaf types",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "LEAFY GREENS",
+    "subCategory": "Leafy",
+    "cropName": "Orache",
+    "variety": "Red / Green",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "LEAFY GREENS",
+    "subCategory": "Leafy",
+    "cropName": "Basella",
+    "variety": "Malabar spinach",
+    "ediblePart": "Leaf",
+    "growthSystem": "Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "LEAFY GREENS",
+    "subCategory": "Leafy",
+    "cropName": "Bathua",
+    "variety": "Chenopodium",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "LEAFY GREENS",
+    "subCategory": "Leafy",
+    "cropName": "Gongura",
+    "variety": "Hibiscus leaf",
+    "ediblePart": "Leaf",
+    "growthSystem": "Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "LEGUMES",
+    "subCategory": "Legume greens",
+    "cropName": "Pea",
+    "variety": "Leaf",
+    "ediblePart": "Shoot",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "LEGUMES",
+    "subCategory": "Legume greens",
+    "cropName": "Fenugreek",
+    "variety": "Methi",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "LEGUMES",
+    "subCategory": "Legume greens",
+    "cropName": "Chickpea",
+    "variety": "Leaf",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "LEGUMES",
+    "subCategory": "Legume greens",
+    "cropName": "Lentil",
+    "variety": "Leaf",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "LEGUMES",
+    "subCategory": "Legume greens",
+    "cropName": "Fava",
+    "variety": "Broad bean",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "LEGUMES",
+    "subCategory": "Legume greens",
+    "cropName": "Mung bean",
+    "variety": "Green gram",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "LEGUMES",
+    "subCategory": "Legume greens",
+    "cropName": "Soy",
+    "variety": "Leaf",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "LEGUMES",
+    "subCategory": "Legume greens",
+    "cropName": "Cowpea",
+    "variety": "Leaf",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "LEGUMES",
+    "subCategory": "Legume greens",
+    "cropName": "Horse gram",
+    "variety": "Kulthi",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "LEGUMES",
+    "subCategory": "Legume greens",
+    "cropName": "Black gram",
+    "variety": "Urad",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "LEGUMES",
+    "subCategory": "Legume greens",
+    "cropName": "Kasuri methi",
+    "variety": "Dried leaf type",
+    "ediblePart": "Leaf",
+    "growthSystem": "Microgreens | Baby leaf | NFT"
+  },
+  {
+    "primaryCategory": "EDIBLE FLOWERS",
+    "subCategory": "Flower",
+    "cropName": "Viola",
+    "variety": "All colours",
+    "ediblePart": "Flower",
+    "growthSystem": "Pots"
+  },
+  {
+    "primaryCategory": "EDIBLE FLOWERS",
+    "subCategory": "Flower",
+    "cropName": "Pansy",
+    "variety": "All colours",
+    "ediblePart": "Flower",
+    "growthSystem": "Pots"
+  },
+  {
+    "primaryCategory": "EDIBLE FLOWERS",
+    "subCategory": "Flower",
+    "cropName": "Nasturtium",
+    "variety": "All colours",
+    "ediblePart": "Flower",
+    "growthSystem": "Pots"
+  },
+  {
+    "primaryCategory": "EDIBLE FLOWERS",
+    "subCategory": "Flower",
+    "cropName": "Borage",
+    "variety": "Blue",
+    "ediblePart": "Flower",
+    "growthSystem": "Pots"
+  },
+  {
+    "primaryCategory": "EDIBLE FLOWERS",
+    "subCategory": "Flower",
+    "cropName": "Calendula",
+    "variety": "Orange / Yellow",
+    "ediblePart": "Flower",
+    "growthSystem": "Pots"
+  },
+  {
+    "primaryCategory": "EDIBLE FLOWERS",
+    "subCategory": "Flower",
+    "cropName": "Dianthus",
+    "variety": "All types",
+    "ediblePart": "Flower",
+    "growthSystem": "Pots"
+  },
+  {
+    "primaryCategory": "EDIBLE FLOWERS",
+    "subCategory": "Flower",
+    "cropName": "Marigold",
+    "variety": "Edible varieties",
+    "ediblePart": "Flower",
+    "growthSystem": "Pots"
+  },
+  {
+    "primaryCategory": "EDIBLE FLOWERS",
+    "subCategory": "Flower",
+    "cropName": "Cornflower",
+    "variety": "Bachelor button",
+    "ediblePart": "Flower",
+    "growthSystem": "Pots"
+  },
+  {
+    "primaryCategory": "EDIBLE FLOWERS",
+    "subCategory": "Flower",
+    "cropName": "Snapdragon",
+    "variety": "Edible varieties",
+    "ediblePart": "Flower",
+    "growthSystem": "Pots"
+  },
+  {
+    "primaryCategory": "EDIBLE FLOWERS",
+    "subCategory": "Flower",
+    "cropName": "Zinnia",
+    "variety": "Edible varieties",
+    "ediblePart": "Flower",
+    "growthSystem": "Pots"
+  },
+  {
+    "primaryCategory": "EDIBLE FLOWERS",
+    "subCategory": "Flower",
+    "cropName": "Verbena",
+    "variety": "Edible varieties",
+    "ediblePart": "Flower",
+    "growthSystem": "Pots"
+  },
+  {
+    "primaryCategory": "EDIBLE FLOWERS",
+    "subCategory": "Flower",
+    "cropName": "Blue pea",
+    "variety": "Clitoria ternatea",
+    "ediblePart": "Flower",
+    "growthSystem": "Pots"
+  },
+  {
+    "primaryCategory": "EDIBLE FLOWERS",
+    "subCategory": "Flower",
+    "cropName": "Hibiscus",
+    "variety": "Dwarf edible",
+    "ediblePart": "Flower",
+    "growthSystem": "Pots"
+  },
+  {
+    "primaryCategory": "EDIBLE FLOWERS",
+    "subCategory": "Flower",
+    "cropName": "Begonia",
+    "variety": "Edible leaf & flower",
+    "ediblePart": "Flower",
+    "growthSystem": "Pots"
+  }
+]

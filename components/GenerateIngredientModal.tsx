@@ -32,12 +32,12 @@ const GenerateIngredientModal: React.FC<GenerateIngredientModalProps> = ({ isOpe
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in" onClick={onClose}>
       <GlassmorphicCard className="w-full max-w-md" onClick={handleModalContentClick}>
         <div className="p-6">
-          <h2 className="text-2xl font-bold text-gray-100 mb-4 font-sans">Generate Ingredient with AI</h2>
+          <h2 className="text-2xl font-bold text-gray-100 mb-4 uppercase tracking-wider">Generate Ingredient with AI</h2>
           <p className="text-gray-400 mb-6">Enter the name of an ingredient, and the Perception Engine will generate its Flavour DNA profile for you to review.</p>
           
           <div className="space-y-4">
             <div>
-                <label htmlFor="ingredientName" className="block text-sm font-medium text-gray-300 mb-2 uppercase font-mono text-xs tracking-wider">Ingredient Name</label>
+                <label htmlFor="ingredientName" className="block text-sm font-medium text-gray-300 mb-2 uppercase tracking-wider">Ingredient Name</label>
                 <input
                   id="ingredientName"
                   type="text"
@@ -45,11 +45,11 @@ const GenerateIngredientModal: React.FC<GenerateIngredientModalProps> = ({ isOpe
                   onChange={(e) => setIngredientName(e.target.value)}
                   placeholder="e.g., Cucumber, Gin, Cardamom..."
                   disabled={isLoading}
-                  className="w-full bg-slate-800/60 border border-slate-700 rounded-md px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition disabled:opacity-50"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-md px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition disabled:opacity-50"
                   autoFocus
                 />
             </div>
-            <div className="flex items-center justify-between p-2 rounded-lg bg-slate-900/50 border border-slate-700/50">
+            <div className="flex items-center justify-between p-2 rounded-lg bg-slate-900 border border-slate-700">
                  <div className="flex items-center gap-2">
                     <BoltIcon className="w-5 h-5 text-yellow-300"/>
                     <label htmlFor="fastMode" className="text-sm font-semibold text-gray-300">Fast Response</label>

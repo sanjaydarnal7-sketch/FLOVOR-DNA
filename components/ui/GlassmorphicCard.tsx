@@ -9,7 +9,7 @@ interface GlassmorphicCardProps extends React.HTMLAttributes<HTMLDivElement> {
 const GlassmorphicCard: React.FC<GlassmorphicCardProps> = ({ children, className = '', ...props }) => {
   return (
     <div
-      className={`bg-slate-900/40 backdrop-blur-2xl border border-slate-800/50 rounded-lg shadow-2xl shadow-black/40 ${className}`}
+      className={`bg-slate-900/90 backdrop-blur-2xl border border-slate-800 rounded-lg shadow-2xl shadow-black/40 ${className}`}
       {...props}
     >
       {children}

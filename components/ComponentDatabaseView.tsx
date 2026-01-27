@@ -7,33 +7,44 @@ import ComponentModal from './ComponentModal';
 import SciFiSlider from './ui/SciFiSlider';
 import GenerateComponentModal from './GenerateComponentModal';
 import { generateComponentProfile } from '../services/geminiService';
+import RadarChart from './ui/RadarChart';
 
 const ComponentCard: React.FC<{ 
     component: Component,
     onEdit: (component: Component) => void,
     onDelete: (id: string) => void,
-}> = ({ component, onEdit, onDelete }) => (
-  <GlassmorphicCard className="p-4 flex flex-col gap-2 transition-all duration-300 hover:border-cyan-400/50 group relative border border-slate-800/50 hover:bg-slate-900/60">
-    <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-        <button onClick={() => onEdit(component)} className="text-gray-500 hover:text-cyan-400 p-1.5 rounded-full hover:bg-slate-700/50 transition-colors"><PencilIcon className="w-5 h-5"/></button>
-        <button onClick={() => onDelete(component.id)} className="text-gray-500 hover:text-red-500 p-1.5 rounded-full hover:bg-slate-700/50 transition-colors"><TrashIcon className="w-5 h-5"/></button>
-    </div>
-    
-    <h3 className="text-lg font-bold text-cyan-300 pr-12 font-sans">{component.name}</h3>
-    <p className="text-xs text-gray-500 uppercase tracking-widest font-mono">{component.category}</p>
-    <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm mt-2 text-gray-400">
-        <p className="font-mono"><span className="font-sans font-semibold text-gray-500">Impact:</span> {component.impact}</p>
-        <p className="font-mono"><span className="font-sans font-semibold text-gray-500">Novelty:</span> {component.novelty}</p>
-        <p className="font-mono"><span className="font-sans font-semibold text-gray-500">Feasibility:</span> {component.feasibility}</p>
-        <p className="font-mono"><span className="font-sans font-semibold text-gray-500">Complexity:</span> {component.complexity}</p>
-    </div>
-    <div className="mt-2 flex flex-wrap gap-1">
-        {component.descriptors.slice(0, 4).map(tag => (
-            <span key={tag} className="bg-cyan-900/50 border border-cyan-700/30 text-cyan-300 text-xs font-medium px-2 py-0.5 rounded-full font-mono">{tag}</span>
-        ))}
-    </div>
-  </GlassmorphicCard>
-);
+}> = ({ component, onEdit, onDelete }) => {
+    const chartData = [
+        { label: 'IMP', value: component.impact },
+        { label: 'NOV', value: component.novelty },
+        { label: 'FEA', value: component.feasibility },
+        { label: 'COM', value: component.complexity },
+        { label: 'APP', value: component.theoreticalAppliedBias },
+        { label: 'CON', value: component.abstractConcreteBias },
+    ];
+
+    return (
+      <GlassmorphicCard className="p-4 flex flex-col gap-3 group relative interactive-card">
+        <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+            <button onClick={() => onEdit(component)} className="text-gray-500 hover:text-cyan-400 p-1.5 rounded-full bg-slate-900/50 hover:bg-slate-800/80 transition-colors"><PencilIcon className="w-5 h-5"/></button>
+            <button onClick={() => onDelete(component.id)} className="text-gray-500 hover:text-red-500 p-1.5 rounded-full bg-slate-900/50 hover:bg-slate-800/80 transition-colors"><TrashIcon className="w-5 h-5"/></button>
+        </div>
+        
+        <h3 className="text-lg font-bold text-cyan-300 pr-16">{component.name}</h3>
+        <p className="text-xs text-gray-500 uppercase tracking-widest font-mono -mt-2">{component.category}</p>
+        
+        <div className="flex-grow flex items-center justify-center my-2">
+            <RadarChart data={chartData} color="var(--research-400)" size={140} />
+        </div>
+
+        <div className="mt-auto flex flex-wrap gap-1 h-5 overflow-hidden">
+            {component.descriptors.slice(0, 3).map(tag => (
+                <span key={tag} className="bg-cyan-900/50 border border-cyan-700/30 text-cyan-300 text-xs font-medium px-2 py-0.5 rounded-full font-mono">{tag}</span>
+            ))}
+        </div>
+      </GlassmorphicCard>
+    );
+};
 
 const ChevronDownIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" {...props}>
@@ -180,18 +191,18 @@ const ComponentDatabaseView: React.FC = () => {
 
   return (
     <div className="animate-fade-in theme-research">
-      <h2 className="text-3xl font-bold text-gray-100 mb-2 font-sans">Component Database</h2>
-      <p className="text-gray-400 mb-6">Explore, search, and manage the core properties of research components.</p>
+      <h2 className="text-3xl font-bold text-gray-100 mb-2 font-display uppercase">Component Database</h2>
+      <p className="text-gray-400 mb-8">Explore, search, and manage the core properties of research components.</p>
       
       <GlassmorphicCard className="p-4 mb-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 items-end">
             <div className="md:col-span-2 lg:col-span-1">
-                <label className="block text-xs text-gray-400 mb-1 font-semibold tracking-wider uppercase font-mono">Search</label>
-                <input type="text" placeholder="e.g., Transformer" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full bg-slate-800/60 border border-slate-700 rounded-md px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition" />
+                <label className="block text-xs text-gray-400 mb-1 font-semibold tracking-wider uppercase">Search</label>
+                <input type="text" placeholder="e.g., Transformer" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full bg-slate-800 border border-slate-700 rounded-md px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition" />
             </div>
             <div className="relative" ref={categorySelectorRef}>
-                <label className="block text-xs text-gray-400 mb-1 font-semibold tracking-wider uppercase font-mono">Category</label>
-                <button onClick={() => setIsCategorySelectorOpen(prev => !prev)} className="w-full bg-slate-800/60 border border-slate-700 rounded-md px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400 transition text-left flex justify-between items-center">
+                <label className="block text-xs text-gray-400 mb-1 font-semibold tracking-wider uppercase">Category</label>
+                <button onClick={() => setIsCategorySelectorOpen(prev => !prev)} className="w-full bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400 transition text-left flex justify-between items-center">
                     <span className="truncate">{filters.category.length > 0 ? `${filters.category.length} selected` : 'All Categories'}</span>
                     <ChevronDownIcon className={`w-4 h-4 transition-transform ${isCategorySelectorOpen ? 'rotate-180' : ''}`} />
                 </button>
@@ -206,8 +217,8 @@ const ComponentDatabaseView: React.FC = () => {
                 )}
             </div>
              <div className="relative" ref={descriptorSelectorRef}>
-                <label className="block text-xs text-gray-400 mb-1 font-semibold tracking-wider uppercase font-mono">Descriptors</label>
-                <button onClick={() => setIsDescriptorSelectorOpen(prev => !prev)} className="w-full bg-slate-800/60 border border-slate-700 rounded-md px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400 transition text-left flex justify-between items-center">
+                <label className="block text-xs text-gray-400 mb-1 font-semibold tracking-wider uppercase">Descriptors</label>
+                <button onClick={() => setIsDescriptorSelectorOpen(prev => !prev)} className="w-full bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400 transition text-left flex justify-between items-center">
                     <span className="truncate">{filters.descriptors.length > 0 ? `${filters.descriptors.length} selected` : 'All Descriptors'}</span>
                     <ChevronDownIcon className={`w-4 h-4 transition-transform ${isDescriptorSelectorOpen ? 'rotate-180' : ''}`} />
                 </button>
@@ -229,11 +240,11 @@ const ComponentDatabaseView: React.FC = () => {
         </div>
         
         <div className="mt-4">
-            <button onClick={() => setIsNumericFilterOpen(prev => !prev)} className="text-sm text-cyan-300 hover:text-cyan-200 flex items-center gap-2 cursor-pointer font-semibold">
+            <button onClick={() => setIsNumericFilterOpen(prev => !prev)} className="text-sm text-cyan-300 hover:text-cyan-200 flex items-center gap-2 cursor-pointer font-semibold uppercase tracking-wider">
                 Numerical Range Filters <ChevronDownIcon className={`w-4 h-4 transition-transform ${isNumericFilterOpen ? 'rotate-180' : ''}`} />
             </button>
             {isNumericFilterOpen && (
-                <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-4 p-4 bg-slate-900/40 rounded-lg border border-slate-800/50">
+                <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-4 p-4 bg-slate-900/80 rounded-lg border border-slate-800/50">
                     {/* FIX: Updated onChange handlers to pass the event and type directly to the refactored `handleRangeChange` function. */}
                     <SciFiSlider label="Impact" name="impact" value={filters.impact.max} min={filters.impact.min} max={10} onChange={(e) => handleRangeChange(e, 'max')} />
                     <SciFiSlider label="" name="impact" value={filters.impact.min} min={0} max={filters.impact.max} onChange={(e) => handleRangeChange(e, 'min')} />

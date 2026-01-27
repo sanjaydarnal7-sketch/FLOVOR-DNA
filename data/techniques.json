@@ -1,0 +1,86 @@
+
+[
+  {
+    "id": "TECH_001",
+    "name": "Sous-Vide",
+    "category": "Thermal",
+    "description": "Cooking food in a vacuum-sealed bag in a precisely controlled water bath.",
+    "parameters": [
+      { "name": "Temperature", "unit": "°C", "type": "number", "defaultValue": 55 },
+      { "name": "Time", "unit": "hours", "type": "number", "defaultValue": 1 }
+    ]
+  },
+  {
+    "id": "TECH_002",
+    "name": "Basic Spherification",
+    "category": "Chemical",
+    "description": "Creating semi-solid spheres with a liquid center using sodium alginate and calcium chloride.",
+    "parameters": [
+      { "name": "Sodium Alginate", "unit": "% by weight", "type": "number", "defaultValue": 0.5 },
+      { "name": "Calcium Chloride Bath", "unit": "% by weight", "type": "number", "defaultValue": 1 }
+    ]
+  },
+  {
+    "id": "TECH_003",
+    "name": "Lacto-Fermentation",
+    "category": "Biological",
+    "description": "Preserving food using lactic acid bacteria in a brine solution.",
+    "parameters": [
+      { "name": "Salinity", "unit": "% by weight", "type": "number", "defaultValue": 2 },
+      { "name": "Duration", "unit": "days", "type": "number", "defaultValue": 7 },
+      { "name": "Temperature", "unit": "°C", "type": "number", "defaultValue": 20 }
+    ]
+  },
+  {
+    "id": "TECH_004",
+    "name": "Foam Stabilisation",
+    "category": "Physical",
+    "description": "Creating stable foams or 'airs' using agents like soy lecithin or versawhip.",
+    "parameters": [
+      { "name": "Stabilising Agent", "unit": "", "type": "select", "options": ["Soy Lecithin", "Versawhip", "Gelatin"], "defaultValue": "Soy Lecithin" },
+      { "name": "Agent Concentration", "unit": "% by weight", "type": "number", "defaultValue": 0.8 }
+    ]
+  },
+  {
+    "id": "TECH_005",
+    "name": "Reverse Spherification",
+    "category": "Chemical",
+    "description": "Spherification method for liquids containing calcium or alcohol. The liquid is dropped into a sodium alginate bath.",
+    "parameters": [
+      { "name": "Sodium Alginate Bath", "unit": "% by weight", "type": "number", "defaultValue": 0.5 },
+      { "name": "Calcium Source", "unit": "", "type": "select", "options": ["Calcium Lactate", "Calcium Chloride"], "defaultValue": "Calcium Lactate" },
+      { "name": "Calcium Concentration", "unit": "% by weight (in liquid)", "type": "number", "defaultValue": 2 }
+    ]
+  },
+  {
+    "id": "TECH_006",
+    "name": "Fluid Gel",
+    "category": "Physical",
+    "description": "Creating a shear-thinned gel that behaves like a fluid when agitated. Ideal for sauces.",
+    "parameters": [
+      { "name": "Gelling Agent", "unit": "", "type": "select", "options": ["Agar Agar", "Gellan Gum"], "defaultValue": "Agar Agar" },
+      { "name": "Agent Concentration", "unit": "% by weight", "type": "number", "defaultValue": 0.2 }
+    ]
+  },
+  {
+    "id": "TECH_007",
+    "name": "Rapid Infusion (N2O)",
+    "category": "Physical",
+    "description": "Using a whipping siphon and nitrous oxide to rapidly infuse flavors into a liquid.",
+    "parameters": [
+      { "name": "N2O Charges", "unit": "charges", "type": "number", "defaultValue": 2 },
+      { "name": "Rest Time", "unit": "minutes", "type": "number", "defaultValue": 5 },
+      { "name": "Infusion Solid", "unit": "", "type": "text", "defaultValue": "Herbs" }
+    ]
+  },
+  {
+    "id": "TECH_008",
+    "name": "Gelatin Clarification",
+    "category": "Physical",
+    "description": "Using gelatin and freeze-thaw cycles to remove impurities from stocks and consommés.",
+    "parameters": [
+      { "name": "Gelatin Concentration", "unit": "% by weight", "type": "number", "defaultValue": 0.5 },
+      { "name": "Freeze Time", "unit": "hours", "type": "number", "defaultValue": 12 }
+    ]
+  }
+]

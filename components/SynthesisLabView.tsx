@@ -19,8 +19,8 @@ const AiModeSelector: React.FC<{
 
     return (
         <div>
-            <label className="text-sm font-medium text-gray-400 tracking-wider mb-2 block">AI Analysis Mode</label>
-            <div className="flex items-center gap-2 p-1 rounded-lg bg-slate-900/50 border border-slate-700/50">
+            <label className="text-sm font-medium text-gray-400 tracking-wider mb-2 block uppercase">AI Analysis Mode</label>
+            <div className="flex items-center gap-2 p-1 rounded-lg bg-slate-900 border border-slate-700">
                 {modes.map(mode => (
                     <button
                         key={mode.id}
@@ -44,22 +44,22 @@ const AiModeSelector: React.FC<{
 const SimpleMarkdownRenderer: React.FC<{ content: string }> = ({ content }) => {
     const lines = content.split('\n');
     return (
-        <div className="prose prose-invert prose-sm max-w-none text-gray-300 font-sans">
+        <div className="prose prose-invert prose-sm max-w-none text-gray-300">
             {lines.map((line, index) => {
                 if (line.startsWith('### ')) {
-                    return <h3 key={index} className="text-cyan-300 font-bold mt-4 mb-2 text-lg font-sans">{line.substring(4)}</h3>;
+                    return <h3 key={index} className="text-cyan-300 font-bold mt-4 mb-2 text-lg uppercase tracking-wider">{line.substring(4)}</h3>;
                 }
                  if (line.startsWith('1. ') || line.startsWith('2. ') || line.startsWith('3. ') || line.startsWith('4. ') || line.startsWith('5. ') || line.startsWith('6. ')) {
                     const boldEnd = line.indexOf('**', 2);
                     if (line.startsWith('**') && boldEnd !== -1) {
-                         return <p key={index} className="my-2"><strong className="text-cyan-300 mr-2 font-semibold font-sans">{line.substring(2, boldEnd)}</strong>{line.substring(boldEnd + 2)}</p>;
+                         return <p key={index} className="my-2"><strong className="text-cyan-300 mr-2 font-semibold">{line.substring(2, boldEnd)}</strong>{line.substring(boldEnd + 2)}</p>;
                     }
                     const parts = line.split(':');
-                     return <p key={index} className="my-2"><strong className="text-cyan-300 mr-2 font-semibold font-sans">{parts[0]}:</strong>{parts.slice(1).join(':')}</p>;
+                     return <p key={index} className="my-2"><strong className="text-cyan-300 mr-2 font-semibold">{parts[0]}:</strong>{parts.slice(1).join(':')}</p>;
                 }
                 if (line.startsWith('**')) {
                     const parts = line.split('**');
-                    return <p key={index} className="my-1"><strong className="text-cyan-300 font-semibold font-sans">{parts[1]}</strong>{parts[2]}</p>;
+                    return <p key={index} className="my-1"><strong className="text-cyan-300 font-semibold">{parts[1]}</strong>{parts[2]}</p>;
                 }
                 return <p key={index} className="my-1 text-gray-400">{line}</p>;
             })}
@@ -194,17 +194,17 @@ const SynthesisLabView: React.FC = () => {
     const totalWeight = composition.reduce((sum, item) => sum + item.weight, 0);
 
     return (
-        <>
+        <div className="theme-research">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-full">
                 {/* Builder Section */}
                 <div className="flex flex-col gap-6 animate-fade-in">
                     <div className="sticky top-0 pt-4 bg-[#020617]/80 backdrop-blur-sm z-10">
-                        <h2 className="text-3xl font-bold text-gray-100 mb-2">Synthesis Lab</h2>
-                        <p className="text-gray-400 mb-6">Engineer a target research profile. The engine will predict outcomes and explain the logic.</p>
+                        <h2 className="text-3xl font-bold text-gray-100 mb-2 font-display uppercase">Synthesis Lab</h2>
+                        <p className="text-gray-400 mb-8">Engineer a target research profile. The engine will predict outcomes and explain the logic.</p>
                     </div>
 
                     <GlassmorphicCard className="p-6">
-                        <h3 className="text-lg font-semibold text-cyan-300 border-b border-slate-700 pb-2 mb-4">Composition Canvas</h3>
+                        <h3 className="text-lg font-semibold text-cyan-300 border-b border-slate-700 pb-2 mb-4 uppercase tracking-wider">Composition Canvas</h3>
                         <div className="space-y-4">
                             {composition.map(item => {
                                 const component = allComponents.find(c => c.id === item.componentId);
@@ -212,7 +212,7 @@ const SynthesisLabView: React.FC = () => {
                                 const percentage = totalWeight > 0 ? (item.weight / totalWeight) * 100 : 0;
 
                                 return (
-                                    <div key={item.componentId} className="flex items-center gap-4 bg-slate-900/50 p-2 rounded-lg">
+                                    <div key={item.componentId} className="flex items-center gap-4 bg-slate-900 p-2 rounded-lg">
                                         <div className="w-1/3">
                                             <span className="font-semibold text-gray-300 truncate block" title={component.name}>{component.name}</span>
                                             <span className="text-xs text-cyan-400 font-mono">{percentage.toFixed(1)}%</span>
@@ -244,7 +244,7 @@ const SynthesisLabView: React.FC = () => {
                     </GlassmorphicCard>
 
                     <GlassmorphicCard className="p-6">
-                        <h3 className="text-lg font-semibold text-cyan-300 border-b border-slate-700 pb-2 mb-4">Core Metrics (Calculated)</h3>
+                        <h3 className="text-lg font-semibold text-cyan-300 border-b border-slate-700 pb-2 mb-4 uppercase tracking-wider">Core Metrics (Calculated)</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
                             <SciFiSlider label="Impact" name="targetImpact" value={Math.round(profile.targetImpact * 10) / 10} min={0} max={10} onChange={handleSliderChange} />
                             <SciFiSlider label="Novelty" name="targetNovelty" value={Math.round(profile.targetNovelty * 10) / 10} min={0} max={10} onChange={handleSliderChange} />
@@ -254,7 +254,7 @@ const SynthesisLabView: React.FC = () => {
                     </GlassmorphicCard>
 
                     <GlassmorphicCard className="p-6">
-                        <h3 className="text-lg font-semibold text-cyan-300 border-b border-slate-700 pb-2 mb-4">Conceptual Bias (Calculated)</h3>
+                        <h3 className="text-lg font-semibold text-cyan-300 border-b border-slate-700 pb-2 mb-4 uppercase tracking-wider">Conceptual Bias (Calculated)</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
                             <SciFiSlider label="Conceptual Bias" name="targetAbstractConcreteBias" value={Math.round(profile.targetAbstractConcreteBias * 10) / 10} min={-5} max={5} minLabel="Abstract" maxLabel="Concrete" onChange={handleSliderChange} />
                             <SciFiSlider label="Methodological Bias" name="targetTheoreticalAppliedBias" value={Math.round(profile.targetTheoreticalAppliedBias * 10) / 10} min={-5} max={5} minLabel="Theoretical" maxLabel="Applied" onChange={handleSliderChange} />
@@ -262,15 +262,15 @@ const SynthesisLabView: React.FC = () => {
                     </GlassmorphicCard>
                     
                      <GlassmorphicCard className="p-6">
-                        <h3 className="text-lg font-semibold text-cyan-300 border-b border-slate-700 pb-2 mb-4">Synthesis Parameters</h3>
+                        <h3 className="text-lg font-semibold text-cyan-300 border-b border-slate-700 pb-2 mb-4 uppercase tracking-wider">Synthesis Parameters</h3>
                         <div className="space-y-4">
                              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
                                 <SciFiSlider label="Synergy Potential" name="synergy" value={profile.synergy} min={0} max={10} onChange={handleSliderChange} />
                                 <SciFiSlider label="Risk Factor" name="risk" value={profile.risk} min={0} max={10} onChange={handleSliderChange} />
                             </div>
                             <div>
-                                 <label className="text-sm font-medium text-gray-400 tracking-wider mb-1 block">Research Objective</label>
-                                <input type="text" name="researchObjective" value={profile.researchObjective} onChange={handleInputChange} className="w-full bg-slate-800/60 border border-slate-700 rounded-md px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition" />
+                                 <label className="text-sm font-medium text-gray-400 tracking-wider mb-1 block uppercase">Research Objective</label>
+                                <input type="text" name="researchObjective" value={profile.researchObjective} onChange={handleInputChange} className="w-full bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition" />
                             </div>
                             <AiModeSelector selectedMode={analysisMode} onSelectMode={setAnalysisMode} />
                         </div>
@@ -296,19 +296,19 @@ const SynthesisLabView: React.FC = () => {
                 {/* Analysis Section */}
                 <div className="lg:h-[calc(100vh-4rem)] lg:sticky lg:top-16">
                      <GlassmorphicCard className="p-6 h-full flex flex-col">
-                         <h2 className="text-2xl font-bold text-gray-100 mb-4 sticky top-0 bg-slate-900/40 backdrop-blur-sm py-2 z-10 border-b border-slate-800 -mx-6 px-6 font-sans">Synthesis Engine Output</h2>
-                         <div className="overflow-y-auto flex-grow -mx-6 px-6 font-mono">
+                         <h2 className="text-2xl font-bold text-gray-100 mb-4 sticky top-0 bg-slate-900/40 backdrop-blur-sm py-2 z-10 border-b border-slate-800 -mx-6 px-6 uppercase tracking-wider">Synthesis Engine Output</h2>
+                         <div className="overflow-y-auto flex-grow -mx-6 px-6">
                             {error && (
                                 <div className="bg-red-900/50 border border-red-500/50 text-red-300 p-4 rounded-lg my-4">
-                                    <h4 className="font-bold font-sans">Analysis Error</h4>
-                                    <p className="text-sm mt-1 font-sans">{error}</p>
+                                    <h4 className="font-bold">Analysis Error</h4>
+                                    <p className="text-sm mt-1">{error}</p>
                                 </div>
                             )}
                             {!isLoading && !analysis && !error && (
                                 <div className="text-center text-gray-600 pt-16 flex flex-col items-center justify-center h-full">
                                     <WaveformIcon className="w-20 h-20 mx-auto mb-4 opacity-10" />
-                                    <p className="font-semibold text-lg font-sans">Analysis Awaiting Input</p>
-                                    <p className="font-sans">Define a profile and run the engine.</p>
+                                    <p className="font-semibold text-lg">Analysis Awaiting Input</p>
+                                    <p>Define a profile and run the engine.</p>
                                 </div>
                             )}
                             <div className="mt-4">
@@ -330,7 +330,7 @@ const SynthesisLabView: React.FC = () => {
                     categories={allCategories}
                 />
             )}
-        </>
+        </div>
     );
 };
 

@@ -248,8 +248,8 @@ const VoiceAssistantView: React.FC = () => {
 
     return (
         <div className="animate-fade-in">
-            <h2 className="text-3xl font-bold text-gray-100 mb-2 font-sans">Voice Assistant</h2>
-            <p className="text-gray-400 mb-6">Have a real-time conversation with the Research DNA assistant.</p>
+            <h2 className="text-3xl font-bold text-gray-100 mb-2 font-display uppercase">Voice Assistant</h2>
+            <p className="text-gray-400 mb-8">Have a real-time conversation with the Research DNA assistant.</p>
             
             <GlassmorphicCard className="p-6 flex flex-col items-center justify-center gap-6 min-h-[60vh]">
                 <button 
@@ -265,13 +265,13 @@ const VoiceAssistantView: React.FC = () => {
                 </button>
                 <p className="font-mono text-gray-400 tracking-wider h-5">{status}</p>
 
-                <div className="w-full h-64 bg-slate-900/50 rounded-lg p-4 overflow-y-auto border border-slate-700/50">
+                <div className="w-full h-64 bg-slate-900 rounded-lg p-4 overflow-y-auto border border-slate-700/50">
                     {transcript.map((entry, index) => (
                         <div key={index} className={`mb-2 ${entry.speaker === 'user' ? 'text-right' : 'text-left'}`}>
                             <span className={`inline-block px-3 py-1.5 rounded-lg text-sm ${
                                 entry.speaker === 'user' 
-                                ? 'bg-cyan-500/20 text-cyan-200' 
-                                : 'bg-slate-700/50 text-gray-300'
+                                ? 'bg-cyan-500/30 text-cyan-200' 
+                                : 'bg-slate-700 text-gray-300'
                             }`}>
                                 {entry.text}
                             </span>

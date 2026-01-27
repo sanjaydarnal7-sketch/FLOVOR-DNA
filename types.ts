@@ -6,6 +6,11 @@ export enum AppMode {
   VOICE_ASSISTANT = 'VOICE_ASSISTANT',
   FLAVOUR_LAB = 'FLAVOUR_LAB',
   INGREDIENT_DATABASE = 'INGREDIENT_DATABASE',
+  CORDIAL_ENGINEER = 'CORDIAL_ENGINEER',
+  GASTRONOMY_LAB = 'GASTRONOMY_LAB',
+  RAW_MATERIALS_GUIDE = 'RAW_MATERIALS_GUIDE',
+  CROP_LIBRARY = 'CROP_LIBRARY',
+  ANIMAL_PRODUCTS_GUIDE = 'ANIMAL_PRODUCTS_GUIDE',
 }
 
 // A set of example descriptors for components. In a real app, this could be user-configurable.
@@ -88,10 +93,13 @@ export interface Ingredient {
   origin: string;
   seasonality: string;
   state: string;
+  key_compounds: string[];
+  potential_contaminants: string[];
+  preservatives: string[];
+  culinary_applications: string[];
 }
 
-
-export interface FlavourDNAProfile {
+export interface FlavourBlendProfile {
     targetAcidity: number;
     targetSweetness: number;
     targetBitterness: number;
@@ -101,4 +109,91 @@ export interface FlavourDNAProfile {
     balance: number;
     complexity: number;
     objective: string;
+}
+
+export interface SavedFlavourBlend {
+    id: string;
+    name: string;
+    profile: FlavourBlendProfile;
+    composition: { ingredientId: string; weight: number }[];
+    analysis: string; // The generated markdown
+    savedAt: string; // ISO date string
+}
+
+export interface CordialSpecificationProfile {
+    base_identity: string;
+    objective: string;
+    volume_ml: number;
+    sharpness: number;
+    juiciness: number;
+    dryness: number;
+    sweet_body: number;
+    texture: number;
+    flavour_pop: number;
+    fresh_cut: number;
+    aroma_bias: number;
+    target_pH: number;
+    constraints: string[];
+    explain_for_training: boolean;
+}
+
+export interface SavedCordialProduct {
+    id: string;
+    name: string;
+    profile: CordialSpecificationProfile;
+    composition: { ingredientId: string; weight: number }[];
+    recipe: string; // The generated markdown
+    savedAt: string; // ISO date string
+}
+
+export interface TechniqueParameter {
+  name: string;
+  unit: string;
+  type: 'number' | 'text' | 'select';
+  options?: string[];
+  defaultValue: string | number;
+  value?: string | number; // To hold the current value in the UI state
+}
+
+export interface Technique {
+  id: string;
+  name: string;
+  category: string;
+  description: string;
+  parameters: TechniqueParameter[];
+}
+
+export interface RawMaterial {
+  id: string;
+  category: string;
+  ingredient: string;
+  form: string;
+  sourceType: string;
+  primaryFunction: string;
+  secondaryFunction: string;
+  storage: string;
+  allergen: string;
+  notes: string;
+}
+
+export interface Crop {
+  primaryCategory: string;
+  subCategory: string;
+  cropName: string;
+  variety: string;
+  ediblePart: string;
+  growthSystem: string;
+}
+
+export interface AnimalProduct {
+  id: string;
+  category: string;
+  ingredient: string;
+  form: string;
+  sourceType: string;
+  primaryFunction: string;
+  secondaryFunction: string;
+  storage: string;
+  allergen: string;
+  notes: string;
 }

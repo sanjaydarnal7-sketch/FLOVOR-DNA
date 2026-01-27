@@ -1,7 +1,7 @@
 
 import { GoogleGenAI, Type } from "@google/genai";
 import { SYSTEM_PROMPT } from '../constants';
-import { SynthesisProfile, Component, Descriptor, Ingredient, FlavourDNAProfile, AiAnalysisMode } from '../types';
+import { SynthesisProfile, Component, Descriptor, Ingredient, FlavourBlendProfile, CordialSpecificationProfile, AiAnalysisMode, Technique } from '../types';
 
 function formatSynthesisProfileToPrompt(profile: SynthesisProfile): string {
     return `
@@ -14,312 +14,429 @@ Here is the target Research DNA profile I have engineered:
   - Complexity: ${profile.targetComplexity}/10
 
 - **Conceptual Profile**:
-  - Abstract/Concrete Bias: ${profile.targetAbstractConcreteBias} (from -5 Abstract to +5 Concrete)
-  - Theoretical/Applied Bias: ${profile.targetTheoreticalAppliedBias} (from -5 Theoretical to +5 Applied)
-  - Synergy: ${profile.synergy}/10
-  - Risk: ${profile.risk}/10
+  - Abstract/Concrete Bias: ${profile.targetAbstractConcreteBias}/5 (from -5 Abstract to +5 Concrete)
+  - Theoretical/Applied Bias: ${profile.targetTheoreticalAppliedBias}/5 (from -5 Theoretical to +5 Applied)
 
-- **Primary Objective**:
-  - Research Objective: "${profile.researchObjective}"
+- **Synthesis Parameters**:
+  - Synergy Potential: ${profile.synergy}/10
+  - Risk Factor: ${profile.risk}/10
 
-Please provide a full analysis based on these parameters, following your operating instructions precisely.
+My high-level research objective is: "${profile.researchObjective}".
 `;
 }
 
-
-export async function* getSynthesisAnalysisStream(profile: SynthesisProfile, mode: AiAnalysisMode) {
+export async function* getSynthesisAnalysisStream(profile: SynthesisProfile, mode: AiAnalysisMode): AsyncGenerator<string, void, undefined> {
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-    const userPrompt = formatSynthesisProfileToPrompt(profile);
+    const model = mode === 'deep' ? 'gemini-3-pro-preview' : 'gemini-3-flash-preview';
     
-    let model = 'gemini-3-flash-preview';
-    const config: any = {
-        systemInstruction: SYSTEM_PROMPT,
-        temperature: 0.5,
-        topP: 0.95,
-    };
-
-    switch (mode) {
-        case 'deep':
-            model = 'gemini-3-pro-preview';
-            config.thinkingConfig = { thinkingBudget: 32768 };
-            break;
-        case 'grounded':
-            model = 'gemini-3-flash-preview';
-            config.tools = [{googleSearch: {}}];
-            break;
-        case 'standard':
-        default:
-            model = 'gemini-3-flash-preview';
-            break;
-    }
-
-    try {
-        const response = await ai.models.generateContentStream({
-            model: model,
-            contents: userPrompt,
-            config: config
-        });
-
-        for await (const chunk of response) {
-            const text = chunk.text;
-            if (text) {
-                yield text;
-            }
+    const prompt = formatSynthesisProfileToPrompt(profile);
+    
+    const response = await ai.models.generateContentStream({
+        model: model,
+        contents: [
+            { role: 'user', parts: [{ text: SYSTEM_PROMPT }] },
+            { role: 'model', parts: [{ text: "Acknowledged. I am ready to begin the synthesis analysis." }] },
+            { role: 'user', parts: [{ text: prompt }] }
+        ],
+        config: {
+            tools: mode === 'grounded' ? [{ googleSearch: {} }] : [],
         }
-    } catch (error) {
-        console.error("Error calling Gemini API:", error);
-        if (error instanceof Error) {
-            throw new Error(`Failed to get analysis from Gemini API: ${error.message}`);
+    });
+
+    for await (const chunk of response) {
+        if (chunk.text) {
+            yield chunk.text;
         }
-        throw new Error("Failed to get analysis from Gemini API due to an unknown error.");
     }
 }
 
-const componentProperties = {
-  name: { type: Type.STRING, description: "The name of the research component (e.g., a theory, technology, paper)." },
-  category: { type: Type.STRING, description: `A high-level category for this component (e.g., 'AI Model', 'Bio-Technology', 'Sociological Theory').` },
-  impact: { type: Type.NUMBER, description: "The potential impact or influence of this component, from 0 (negligible) to 10 (paradigm-shifting)." },
-  novelty: { type: Type.NUMBER, description: "The novelty or originality of the component, from 0 (well-established) to 10 (brand new)." },
-  feasibility: { type: Type.NUMBER, description: "The practical feasibility of implementing or using this component, from 0 (highly theoretical) to 10 (readily available)." },
-  complexity: { type: Type.NUMBER, description: "The inherent complexity of understanding or applying this component, from 0 (simple) to 10 (extremely complex)." },
-  descriptors: {
-    type: Type.ARRAY,
-    items: { type: Type.STRING },
-    description: `An array of descriptive tags. Choose relevant tags from this list: ${Object.values(Descriptor).join(', ')}.`
-  },
-  abstractConcreteBias: { type: Type.NUMBER, description: "A score from 0 (highly abstract) to 10 (highly concrete)." },
-  theoreticalAppliedBias: { type: Type.NUMBER, description: "A score from 0 (purely theoretical) to 10 (purely applied)." },
-  abstract: { type: Type.STRING, description: "A concise, one or two-sentence abstract summarizing the component." },
-  sourceURL: { type: Type.STRING, description: "A canonical URL for more information, like a Wikipedia page, arXiv link, or documentation." }
-};
-
-const componentSchema = {
-  type: Type.OBJECT,
-  properties: componentProperties,
-  required: Object.keys(componentProperties)
-};
-
-
-export async function generateComponentProfile(componentName: string, options: { fast?: boolean } = {}): Promise<Omit<Component, 'id'>> {
+export async function generateComponentProfile(componentName: string, options: { fast: boolean }): Promise<Omit<Component, 'id'>> {
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-    const prompt = `Generate a comprehensive Research DNA profile for the following component: "${componentName}". Provide a realistic and scientifically plausible analysis. The output must strictly follow the provided JSON schema.`;
+    const model = options.fast ? 'gemini-3-flash-preview' : 'gemini-3-pro-preview';
+    
+    const prompt = `
+    Analyze the research component "${componentName}" and generate its Research DNA profile.
+    Provide a concise, one-sentence abstract. Identify its primary category (e.g., 'AI Model', 'Bio-Technology', 'Philosophical Concept').
+    Assign up to 4 relevant descriptors from this list: ${Object.values(Descriptor).join(', ')}.
+    Rate the following on a 0-10 scale: impact, novelty, feasibility, complexity.
+    Rate its conceptual biases on a 0-10 scale: abstractConcreteBias (0=Abstract, 10=Concrete) and theoreticalAppliedBias (0=Theoretical, 10=Applied).
+    Provide a relevant source URL if possible (e.g., primary paper, Wikipedia).
+    `;
 
-    const model = options.fast ? 'gemini-2.5-flash-lite' : 'gemini-3-pro-preview';
-
-    try {
-        const response = await ai.models.generateContent({
-            model: model,
-            contents: prompt,
-            config: {
-                responseMimeType: "application/json",
-                responseSchema: componentSchema,
+    const response = await ai.models.generateContent({
+        model,
+        contents: prompt,
+        config: {
+            responseMimeType: "application/json",
+            responseSchema: {
+                type: Type.OBJECT,
+                properties: {
+                    name: { type: Type.STRING },
+                    category: { type: Type.STRING },
+                    impact: { type: Type.NUMBER },
+                    novelty: { type: Type.NUMBER },
+                    feasibility: { type: Type.NUMBER },
+                    complexity: { type: Type.NUMBER },
+                    descriptors: {
+                        type: Type.ARRAY,
+                        items: { type: Type.STRING }
+                    },
+                    abstractConcreteBias: { type: Type.NUMBER },
+                    theoreticalAppliedBias: { type: Type.NUMBER },
+                    abstract: { type: Type.STRING },
+                    sourceURL: { type: Type.STRING },
+                },
+                required: ['name', 'category', 'impact', 'novelty', 'feasibility', 'complexity', 'descriptors', 'abstractConcreteBias', 'theoreticalAppliedBias', 'abstract', 'sourceURL']
             }
-        });
-        
-        const text = response.text;
-        if (!text) {
-             throw new Error("Received an empty response from the API.");
         }
-        
-        const generatedData = JSON.parse(text);
-        
-        if (!generatedData.name || typeof generatedData.name !== 'string') {
-            throw new Error("Generated data is missing or has an invalid 'name' field.");
-        }
+    });
 
-        return generatedData as Omit<Component, 'id'>;
-
-    } catch (error) {
-        console.error(`Error generating profile for "${componentName}":`, error);
-        let errorMessage = "Failed to generate component profile.";
-        if (error instanceof Error) {
-            errorMessage += ` Details: ${error.message}`;
-        }
-        throw new Error(errorMessage);
+    if (!response.text) {
+        throw new Error("Received an empty response from the AI.");
+    }
+    
+    try {
+        return JSON.parse(response.text);
+    } catch (e) {
+        console.error("Failed to parse JSON response:", response.text);
+        throw new Error("The AI returned data in an invalid format.");
     }
 }
 
 
-const FLAVOUR_SYSTEM_PROMPT = `
-You are the Flavour DNA Perception Engine.
-
-Your role is to analyze and predict the sensory outcome of combining ingredients based on their Flavour DNA profiles. You are an expert in food science, molecular gastronomy, and sensory analysis.
-
-### Operating Rules
-
-1.  Always start with the user's high-level objective.
-2.  Analyze the target Flavour DNA profile and what it implies for the final product.
-3.  Evaluate the provided ingredients, noting their strengths, weaknesses, and potential interactions (synergies and clashes).
-4.  Predict the holistic sensory experience: aroma, taste, texture, and finish.
-5.  Provide a scientific or culinary explanation for your predictions, referencing chemical compounds (e.g., esters, aldehydes, terpenes), physical properties, and established pairing principles.
-6.  Suggest specific ratios or preparation techniques to achieve the target profile.
-7.  Identify potential risks (e.g., muddiness, overpowering notes, textural breakdown) and opportunities for innovation.
-
-### You must NEVER:
-
-*   Provide a simple recipe without explanation.
-*   Use vague, unscientific language ("tastes good").
-*   Ignore the quantitative DNA data provided.
-*   Act like a casual recipe blogger.
-
-### Your Output Structure
-
-Use markdown for formatting.
-
-1.  **Objective Analysis:** Briefly summarize the user's goal and the desired Flavour DNA.
-2.  **Ingredient Synergy Analysis:** Discuss how the chosen ingredients will interact.
-3.  **Predicted Sensory Outcome:** Describe the final taste, aroma, and texture.
-4.  **Culinary & Scientific Rationale:** Explain *why* it will taste that way.
-5.  **Technique & Ratio Suggestions:** Provide actionable advice.
-6.  **Risks & Opportunities:** Highlight potential issues and novel ideas.
-`;
-
-
-function formatFlavourProfileToPrompt(profile: FlavourDNAProfile, ingredients: Ingredient[]): string {
-    const ingredientList = ingredients.map(i => `- ${i.name} (Acids: ${i.dna.acids}, Sugars: ${i.dna.sugars}, Aromatics: ${i.dna.aromatics}, Texture: ${i.dna.texture})`).join('\n');
+function formatFlavourProfileToPrompt(profile: FlavourBlendProfile, ingredients: Ingredient[]): string {
+    const ingredientList = ingredients.length > 0
+        ? ingredients.map(i => `- ${i.name}`).join('\n')
+        : 'No ingredients provided.';
 
     return `
-Here is the target Flavour DNA profile I am aiming for:
+You are the Flavour DNA Perception Engine, an expert sensory analyst and R&D professional.
+Your task is to analyze a given flavour blend based on its composition and target profile.
 
-- **Core Taste**:
-  - Acidity: ${profile.targetAcidity}/10
-  - Sweetness: ${profile.targetSweetness}/10
-  - Bitterness: ${profile.targetBitterness}/10
-  - Umami: ${profile.targetUmami}/10
-- **Aromatics & Texture**:
-  - Aromatic Intensity: ${profile.targetAromaticIntensity}/10
-  - Target Texture Score: ${profile.targetTexture}/10
-- **Conceptual Goals**:
-  - Balance: ${profile.balance}/10
-  - Complexity: ${profile.complexity}/10
-- **Primary Objective**:
-  - Objective: "${profile.objective}"
-
-Here are the ingredients I am considering:
+### Ingredient Composition
 ${ingredientList}
 
-Please provide a full analysis based on these parameters, following your operating instructions precisely.
+### Target Sensory Profile
+- Acidity: ${profile.targetAcidity}/10
+- Sweetness: ${profile.targetSweetness}/10
+- Bitterness: ${profile.targetBitterness}/10
+- Umami: ${profile.targetUmami}/10
+- Aromatic Intensity: ${profile.targetAromaticIntensity}/10
+- Texture: ${profile.targetTexture}/10
+- Balance: ${profile.balance}/10
+- Complexity: ${profile.complexity}/10
+
+### High-Level Objective
+"${profile.objective}"
+
+### Your Analysis Task
+Based on the provided ingredients and target profile, provide a professional sensory analysis. Use markdown for clear formatting.
+
+1.  **### Overall Sensory Prediction:** Briefly describe the likely overall taste and aroma profile of this blend.
+2.  **### Harmony & Dissonance:** Analyze how well the ingredients will work together. Point out potential positive synergies and negative clashes.
+3.  **### Profile Alignment:** Assess how well the ingredient blend achieves the target sensory profile sliders. Is it likely to be more or less acidic, sweet, etc., than desired?
+4.  **### R&D Recommendations:** Suggest specific adjustments. For example, "Increase the proportion of X to boost Y," or "Consider adding Z to introduce complexity."
 `;
 }
 
-export async function* getFlavourAnalysisStream(profile: FlavourDNAProfile, ingredients: Ingredient[], mode: AiAnalysisMode) {
+export async function* getFlavourBlendAnalysisStream(profile: FlavourBlendProfile, ingredients: Ingredient[], mode: AiAnalysisMode): AsyncGenerator<string, void, undefined> {
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-    const userPrompt = formatFlavourProfileToPrompt(profile, ingredients);
+    const model = mode === 'deep' ? 'gemini-3-pro-preview' : 'gemini-3-flash-preview';
     
-    let model = 'gemini-3-flash-preview';
-    const config: any = {
-        systemInstruction: FLAVOUR_SYSTEM_PROMPT,
-        temperature: 0.6,
-        topP: 0.95,
-    };
-
-    switch (mode) {
-        case 'deep':
-            model = 'gemini-3-pro-preview';
-            config.thinkingConfig = { thinkingBudget: 32768 };
-            break;
-        case 'grounded':
-            model = 'gemini-3-flash-preview';
-            config.tools = [{googleSearch: {}}];
-            break;
-        case 'standard':
-        default:
-             model = 'gemini-3-flash-preview';
-            break;
-    }
-
-    try {
-        const response = await ai.models.generateContentStream({
-            model: model,
-            contents: userPrompt,
-            config: config
-        });
-
-        for await (const chunk of response) {
-            const text = chunk.text;
-            if (text) {
-                yield text;
-            }
+    const prompt = formatFlavourProfileToPrompt(profile, ingredients);
+    
+    const response = await ai.models.generateContentStream({
+        model: model,
+        contents: prompt,
+        config: {
+            tools: mode === 'grounded' ? [{ googleSearch: {} }] : [],
         }
-    } catch (error) {
-        console.error("Error calling Gemini API for flavour analysis:", error);
-        if (error instanceof Error) {
-            throw new Error(`Failed to get analysis from Gemini API: ${error.message}`);
+    });
+
+    for await (const chunk of response) {
+        if (chunk.text) {
+            yield chunk.text;
         }
-        throw new Error("Failed to get analysis from Gemini API due to an unknown error.");
     }
 }
 
-const ingredientDnaProperties = {
-  acids: { type: Type.NUMBER, description: "The acidity level, from 0 (none) to 10 (highly acidic)." },
-  sugars: { type: Type.NUMBER, description: "The sweetness level from sugars, from 0 (none) to 10 (very sweet)." },
-  bitterness: { type: Type.NUMBER, description: "The bitterness level, from 0 (none) to 10 (very bitter)." },
-  aromatics: { type: Type.NUMBER, description: "The intensity of the aroma, from 0 (none) to 10 (highly aromatic)." },
-  aldehydes: { type: Type.NUMBER, description: "The intensity of aldehyde compounds (often green, fatty, or citrus notes), from 0 to 10." },
-  esters: { type: Type.NUMBER, description: "The intensity of ester compounds (often fruity or floral notes), from 0 to 10." },
-  umami: { type: Type.NUMBER, description: "The umami/savoriness level, from 0 (none) to 10 (very savory)." },
-  texture: { type: Type.NUMBER, description: "A numeric representation of texture, from 0 (watery/thin) to 10 (firm/starchy/dense)." },
-  water_content: { type: Type.NUMBER, description: "The water content level, from 0 (dry) to 10 (very juicy)." },
-};
-
-const ingredientProperties = {
-  name: { type: Type.STRING, description: "The common name of the ingredient (e.g., 'Alphonso Mango')." },
-  type: { type: Type.STRING, description: "A high-level category for this ingredient (e.g., 'fruit', 'vegetable', 'herb', 'spice')." },
-  subcategory: { type: Type.STRING, description: "A more specific subcategory (e.g., 'citrus', 'tropical', 'root', 'leafy green')." },
-  archetype: { type: Type.STRING, description: "A sensory archetype that describes its primary character (e.g., 'Citrus Zest', 'Tropical Musk', 'Earthy Root')." },
-  dna: {
-    type: Type.OBJECT,
-    properties: ingredientDnaProperties,
-    required: Object.keys(ingredientDnaProperties)
-  },
-  notes: { type: Type.STRING, description: "Short, sensory-focused notes about its key characteristics (e.g., 'Intensely fragrant, floral lime...'). No chemistry jargon." },
-  origin: { type: Type.STRING, description: "The primary cultural or geographical origin (e.g., 'India (Bengal)', 'South America')." },
-  seasonality: { type: Type.STRING, description: "Typical season of availability (e.g., 'Summer', 'Winter', 'Year-round')." },
-  state: { type: Type.STRING, description: "The typical state of the ingredient (e.g., 'fresh', 'dried')." }
-};
-
-const ingredientSchema = {
-  type: Type.OBJECT,
-  properties: ingredientProperties,
-  required: [...Object.keys(ingredientProperties).filter(k => k !== 'id')] // id is not required from model
-};
-
-
-export async function generateIngredientProfile(ingredientName: string, options: { fast?: boolean } = {}): Promise<Omit<Ingredient, 'id'>> {
+export async function generateIngredientProfile(ingredientName: string, options: { fast: boolean }): Promise<Omit<Ingredient, 'id'>> {
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-    const prompt = `Generate a comprehensive Flavour DNA profile for the following ingredient: "${ingredientName}". Adhere strictly to the provided JSON schema. Generate real-world data based on scientific and culinary knowledge. The DNA values should be integers between 0 and 10.`;
+    const model = options.fast ? 'gemini-3-flash-preview' : 'gemini-3-pro-preview';
+    
+    const prompt = `
+    Analyze the sensory profile of the ingredient "${ingredientName}" and generate its Flavour DNA profile.
 
-    const model = options.fast ? 'gemini-2.5-flash-lite' : 'gemini-3-pro-preview';
+    - Provide a primary 'type' (e.g., fruit, herb, spice, vegetable, alcohol, sugar, fat).
+    - Provide a 'subcategory' (e.g., citrus, root, spirit).
+    - Provide a sensory 'archetype' (e.g., Citrus Zest, Tropical Musk, Pungent Aromatic, Roasted Bitter).
+    - Rate its core DNA on a 0-10 scale: acids, sugars, bitterness, aromatics, aldehydes, esters, umami, texture, water_content.
+    - Provide brief sensory 'notes' (e.g., "Fruity, Green, Zesty. Sour, Bitter (Rind).").
+    - Provide typical 'origin' and 'seasonality'.
+    - Provide its typical 'state' (e.g., fresh, dried, processed).
+    - Provide a list of common 'culinary_applications' (e.g., Cocktails, Sauces, Desserts).
+
+    Return this information in a strict JSON format.
+    `;
+
+    const response = await ai.models.generateContent({
+        model,
+        contents: prompt,
+        config: {
+            responseMimeType: "application/json",
+            responseSchema: {
+                type: Type.OBJECT,
+                properties: {
+                    name: { type: Type.STRING, description: `The common name of the ingredient, formatted as "${ingredientName}".` },
+                    type: { type: Type.STRING },
+                    subcategory: { type: Type.STRING },
+                    archetype: { type: Type.STRING },
+                    dna: {
+                        type: Type.OBJECT,
+                        properties: {
+                            acids: { type: Type.NUMBER },
+                            sugars: { type: Type.NUMBER },
+                            bitterness: { type: Type.NUMBER },
+                            aromatics: { type: Type.NUMBER },
+                            aldehydes: { type: Type.NUMBER },
+                            esters: { type: Type.NUMBER },
+                            umami: { type: Type.NUMBER },
+                            texture: { type: Type.NUMBER },
+                            water_content: { type: Type.NUMBER }
+                        },
+                        required: ['acids', 'sugars', 'bitterness', 'aromatics', 'aldehydes', 'esters', 'umami', 'texture', 'water_content']
+                    },
+                    notes: { type: Type.STRING },
+                    origin: { type: Type.STRING },
+                    seasonality: { type: Type.STRING },
+                    state: { type: Type.STRING },
+                    culinary_applications: {
+                        type: Type.ARRAY,
+                        items: { type: Type.STRING }
+                    },
+                },
+                required: ['name', 'type', 'subcategory', 'archetype', 'dna', 'notes', 'origin', 'seasonality', 'state', 'culinary_applications']
+            }
+        }
+    });
+
+    if (!response.text) {
+        throw new Error("Received an empty response from the AI.");
+    }
+    
+    try {
+        const parsed = JSON.parse(response.text);
+        parsed.name = ingredientName;
+        return parsed;
+    } catch (e) {
+        console.error("Failed to parse JSON response:", response.text);
+        throw new Error("The AI returned data in an invalid format.");
+    }
+}
+
+function formatCordialProfileToPrompt(profile: CordialSpecificationProfile, ingredients: Ingredient[]): string {
+    const ingredientList = ingredients.length > 0
+        ? `The recipe MUST be built around the following core ingredients:\n` + ingredients.map(i => `- ${i.name}`).join('\n')
+        : 'The recipe can be built from scratch, but should align with the base identity.';
+
+    return `
+You are a master "Liquid Engineer" and R&D professional specializing in beverage formulation.
+Your task is to generate a professional, production-ready recipe for a cordial based on a detailed specification.
+
+### Product Specification
+- **Base Identity:** ${profile.base_identity}
+- **High-Level Objective:** ${profile.objective}
+- **Target Volume:** ${profile.volume_ml} mL
+- **Target pH:** ${profile.target_pH}
+
+### Sensory DNA Profile
+- Sharpness (Malic Acid feel): ${profile.sharpness}/100
+- Juiciness (Citric Acid feel): ${profile.juiciness}/100
+- Dryness (Tartaric Acid feel): ${profile.dryness}/30
+- Sweet Body: ${profile.sweet_body}/100
+- Texture/Mouthfeel: ${profile.texture}/100
+- Flavour Pop (Salt perception): ${profile.flavour_pop}/20
+- Fresh Cut Illusion (Aldehydes/Esters): ${profile.fresh_cut}/15
+- Aroma Bias: ${profile.aroma_bias} (from -50 Herbal to +50 Fruity)
+
+### Core Ingredients & Constraints
+${ingredientList}
+- **Constraints:** ${profile.constraints.join(', ')}
+
+### Your Task
+Generate a complete recipe. Adhere to the following professional markdown structure strictly.
+
+**### Recipe Summary**
+A brief, one-paragraph overview of the cordial's flavour profile and character.
+
+**### Ingredients**
+A precise list of all ingredients with quantities in grams (g) or milliliters (mL). Calculate percentages based on the total final weight/volume.
+
+**### Equipment**
+A list of necessary professional equipment.
+
+**### Method**
+A step-by-step production method. Be precise and clear.
+
+${profile.explain_for_training ? `
+**### R&D Explanation**
+Explain the "why" behind your choices.
+- How does the ingredient combination achieve the target Sensory DNA?
+- Why were specific acids (malic, citric, etc.) chosen?
+- How is the target pH achieved and why is it important?
+` : ''}
+`;
+}
+
+export async function* getCordialRecipeStream(profile: CordialSpecificationProfile, ingredients: Ingredient[], mode: AiAnalysisMode): AsyncGenerator<string, void, undefined> {
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const model = mode === 'deep' ? 'gemini-3-pro-preview' : 'gemini-3-pro-preview';
+    
+    const prompt = formatCordialProfileToPrompt(profile, ingredients);
+    
+    const response = await ai.models.generateContentStream({
+        model: model,
+        contents: prompt,
+        config: {
+            tools: mode === 'grounded' ? [{ googleSearch: {} }] : [],
+        }
+    });
+
+    for await (const chunk of response) {
+        if (chunk.text) {
+            yield chunk.text;
+        }
+    }
+}
+
+export async function generateCordialProfileFromObjective(objective: string, ingredients: Ingredient[]): Promise<{ profile: Partial<CordialSpecificationProfile>, rationale: string }> {
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    
+    const ingredientList = ingredients.length > 0
+        ? `The profile MUST be suitable for these core ingredients: ${ingredients.map(i => i.name).join(', ')}.`
+        : 'The profile can be designed from a blank slate.';
+
+    const prompt = `
+    Analyze the following beverage objective and translate it into a technical Cordial Specification Profile.
+    Objective: "${objective}".
+    ${ingredientList}
+
+    Synthesize the sensory DNA sliders and technical parameters based on the objective.
+    - Rate from 0-100: sharpness, juiciness, sweet_body, texture.
+    - Rate from 0-30: dryness.
+    - Rate from 0-20: flavour_pop.
+    - Rate from 0-15: fresh_cut.
+    - Rate from -50 (Herbal) to +50 (Fruity): aroma_bias.
+    - Estimate a suitable target_pH (typically between 2.6 and 3.4).
+    - Provide a short 'rationale' explaining how you translated the objective into these specific numbers.
+    `;
+
+    const response = await ai.models.generateContent({
+        model: 'gemini-3-pro-preview',
+        contents: prompt,
+        config: {
+            responseMimeType: 'application/json',
+            responseSchema: {
+                type: Type.OBJECT,
+                properties: {
+                    profile: {
+                        type: Type.OBJECT,
+                        properties: {
+                            sharpness: { type: Type.NUMBER },
+                            juiciness: { type: Type.NUMBER },
+                            dryness: { type: Type.NUMBER },
+                            sweet_body: { type: Type.NUMBER },
+                            texture: { type: Type.NUMBER },
+                            flavour_pop: { type: Type.NUMBER },
+                            fresh_cut: { type: Type.NUMBER },
+                            aroma_bias: { type: Type.NUMBER },
+                            target_pH: { type: Type.NUMBER },
+                        },
+                        required: ['sharpness', 'juiciness', 'dryness', 'sweet_body', 'texture', 'flavour_pop', 'fresh_cut', 'aroma_bias', 'target_pH']
+                    },
+                    rationale: {
+                        type: Type.STRING,
+                        description: 'A brief explanation of the choices made for the profile values, formatted with markdown (e.g., using ### for a header).'
+                    }
+                },
+                required: ['profile', 'rationale']
+            }
+        }
+    });
+
+    if (!response.text) {
+        throw new Error("Received an empty response from the AI.");
+    }
 
     try {
-        const response = await ai.models.generateContent({
-            model: model,
-            contents: prompt,
-            config: {
-                responseMimeType: "application/json",
-                responseSchema: ingredientSchema,
-            }
-        });
-        
-        const text = response.text;
-        if (!text) {
-             throw new Error("Received an empty response from the API.");
-        }
-        
-        const generatedData = JSON.parse(text);
-        
-        if (!generatedData.name || typeof generatedData.name !== 'string') {
-            throw new Error("Generated data is missing or has an invalid 'name' field.");
-        }
+        return JSON.parse(response.text);
+    } catch (e) {
+        console.error("Failed to parse JSON response:", response.text);
+        throw new Error("The AI returned data in an invalid format.");
+    }
+}
 
-        return generatedData as Omit<Ingredient, 'id'>;
 
-    } catch (error) {
-        console.error(`Error generating profile for "${ingredientName}":`, error);
-        let errorMessage = "Failed to generate ingredient profile.";
-        if (error instanceof Error) {
-            errorMessage += ` Details: ${error.message}`;
+function formatGastronomyExperimentToPrompt(objective: string, ingredient: Ingredient | null, technique: Technique | null): string {
+    const parameterList = technique?.parameters.map(p => `- ${p.name}: ${p.value} ${p.unit}`).join('\n') || 'N/A';
+
+    return `
+You are a professional Food Scientist and R&D Chef working in an advanced culinary laboratory.
+Your task is to generate a detailed, professional experimental protocol based on the user's objective and selected parameters.
+
+### High-Level R&D Objective
+"${objective}"
+
+### Primary Subject
+- **Ingredient:** ${ingredient?.name || 'Not specified'}
+- **Core Profile:** ${ingredient?.notes || 'N/A'}
+
+### Primary Technique
+- **Technique:** ${technique?.name || 'Not specified'}
+- **Description:** ${technique?.description || 'N/A'}
+- **Parameters:**
+${parameterList}
+
+### Your Task
+Generate a complete experimental protocol. Use markdown for clear formatting and adopt a scientific, professional tone. Structure your response as follows:
+
+**### Experiment Objective**
+A concise, one-sentence summary of the goal, translated into scientific terms.
+
+**### Predicted Outcome**
+Describe the expected sensory (taste, aroma, texture) and physical (appearance, stability) properties of the result. Be specific.
+
+**### Scientific Rationale**
+Explain the key chemical and physical principles at play. Why will this combination of ingredient, technique, and parameters produce the predicted outcome? Refer to concepts like Maillard reaction, protein denaturation, gelation, etc.
+
+**### Required Equipment**
+A precise list of necessary laboratory or professional kitchen equipment.
+
+**### Step-by-Step Procedure**
+A detailed, clear, and repeatable method for conducting the experiment. Include precise measurements, temperatures, timings, and actions.
+
+**### Control Variables & Safety**
+List the most important variables to keep constant for repeatability. Note any necessary safety precautions (e.g., handling specific chemicals, high temperatures).
+`;
+}
+
+export async function* getGastronomyExperimentStream(objective: string, ingredient: Ingredient | null, technique: Technique | null, mode: AiAnalysisMode): AsyncGenerator<string, void, undefined> {
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const model = mode === 'deep' ? 'gemini-3-pro-preview' : 'gemini-3-flash-preview';
+    
+    const prompt = formatGastronomyExperimentToPrompt(objective, ingredient, technique);
+    
+    const response = await ai.models.generateContentStream({
+        model: model,
+        contents: prompt,
+        config: {
+            tools: mode === 'grounded' ? [{ googleSearch: {} }] : [],
         }
-        throw new Error(errorMessage);
+    });
+
+    for await (const chunk of response) {
+        if (chunk.text) {
+            yield chunk.text;
+        }
     }
 }

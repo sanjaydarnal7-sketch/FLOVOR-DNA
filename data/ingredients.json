@@ -10,7 +10,11 @@
     "notes": "Fruity, Green, Zesty. Sour, Bitter (Rind).",
     "origin": "Global (Asia Origin)",
     "seasonality": "Year-round",
-    "state": "fresh"
+    "state": "fresh",
+    "key_compounds": ["Vitamin C", "Citric Acid", "Flavonoids", "Limonene"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Beverages", "Garnish", "Marinades", "Desserts"]
   },
   {
     "id": "ING_002",
@@ -22,7 +26,11 @@
     "notes": "Green, Fruity, Sharp. Sour, Bitter.",
     "origin": "Global (Persian Origin)",
     "seasonality": "Year-round",
-    "state": "fresh"
+    "state": "fresh",
+    "key_compounds": ["Vitamin C", "Citric Acid", "Flavonoids"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Cocktails", "Garnish", "Curries", "Salsas"]
   },
   {
     "id": "ING_003",
@@ -34,7 +42,11 @@
     "notes": "Fruity, Floral, Piney, Sulfury. Sweet, Sour (if raw).",
     "origin": "India",
     "seasonality": "Spring",
-    "state": "fresh"
+    "state": "fresh",
+    "key_compounds": ["Vitamin A", "Vitamin C", "Beta-carotene", "Mangiferin"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Desserts", "Smoothies", "Chutneys", "Salads"]
   },
   {
     "id": "ING_004",
@@ -46,7 +58,11 @@
     "notes": "Spicy, Earthy, Citrusy, Woody. Pungent, Hot, Sweet (cooked).",
     "origin": "SE Asia / India",
     "seasonality": "Year-round",
-    "state": "fresh"
+    "state": "fresh",
+    "key_compounds": ["Gingerol", "Shogaol", "Zingiberene"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Stir-fries", "Teas", "Soups", "Baking"]
   },
   {
     "id": "ING_005",
@@ -58,7 +74,11 @@
     "notes": "Green, Cooling, Spicy. Cooling, Sweetish.",
     "origin": "Global",
     "seasonality": "Summer",
-    "state": "fresh"
+    "state": "fresh",
+    "key_compounds": ["Menthol", "Menthone", "Flavonoids"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Cocktails (Mojito)", "Teas", "Sauces", "Garnish"]
   },
   {
     "id": "ING_006",
@@ -70,7 +90,11 @@
     "notes": "Nutty, Creamy, Sweet, Dairy. Sweet, Fatty.",
     "origin": "Tropical",
     "seasonality": "Year-round",
-    "state": "processed"
+    "state": "processed",
+    "key_compounds": ["Lauric Acid", "Manganese"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Curries", "Desserts", "Soups", "Cocktails (Piña Colada)"]
   },
   {
     "id": "ING_007",
@@ -82,7 +106,11 @@
     "notes": "Fruity, Sweet, Tropical. Sweet, Sour.",
     "origin": "South America / Global",
     "seasonality": "Varies",
-    "state": "fresh"
+    "state": "fresh",
+    "key_compounds": ["Vitamin C", "Manganese", "Bromelain"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Grilling", "Juices", "Desserts", "Salsas"]
   },
   {
     "id": "ING_008",
@@ -94,7 +122,11 @@
     "notes": "Green, Watery, Fresh, Melon. Watery, Mild, Vegetal.",
     "origin": "India / Global",
     "seasonality": "Summer",
-    "state": "fresh"
+    "state": "fresh",
+    "key_compounds": ["Vitamin K", "Cucurbitacin"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Salads", "Infused Water", "Pickling", "Cold Soups"]
   },
   {
     "id": "ING_009",
@@ -106,7 +138,11 @@
     "notes": "Fruity, Sweet, Caramel, Green. Sweet, Sour.",
     "origin": "Global",
     "seasonality": "Spring/Summer",
-    "state": "fresh"
+    "state": "fresh",
+    "key_compounds": ["Vitamin C", "Manganese", "Anthocyanins"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Desserts", "Jams", "Salads", "Smoothies"]
   },
   {
     "id": "ING_010",
@@ -118,7 +154,11 @@
     "notes": "Roasted, Nutty, Earthy, Chocolate. Bitter, Sour, Umami.",
     "origin": "Ethiopia / Global",
     "seasonality": "Year-round",
-    "state": "processed"
+    "state": "processed",
+    "key_compounds": ["Caffeine", "Chlorogenic Acid"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Beverages", "Desserts (Tiramisu)", "Rubs", "Sauces"]
   },
   {
     "id": "ING_011",
@@ -130,7 +170,11 @@
     "notes": "Green, Vegetal, Savory. Umami, Sweet, Sour.",
     "origin": "Americas / Global",
     "seasonality": "Summer",
-    "state": "fresh"
+    "state": "fresh",
+    "key_compounds": ["Vitamin C", "Lycopene", "Glutamic Acid"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Sauces", "Salads", "Soups", "Roasting"]
   },
   {
     "id": "ING_012",
@@ -142,7 +186,11 @@
     "notes": "Piney, Woody, Camphoraceous. Bitter, Resinous, Pungent.",
     "origin": "Mediterranean",
     "seasonality": "Year-round",
-    "state": "fresh"
+    "state": "fresh",
+    "key_compounds": ["Carnosic acid", "Rosmarinic acid"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Roasting (Meats)", "Infused Oils", "Breads", "Cocktails"]
   },
   {
     "id": "ING_013",
@@ -154,7 +202,11 @@
     "notes": "Citrus, Smoky, Sulfur, Nutty. Astringent, Savory, Nutty.",
     "origin": "India / Sri Lanka",
     "seasonality": "Year-round",
-    "state": "fresh"
+    "state": "fresh",
+    "key_compounds": ["Carbazole alkaloids"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Tempering (Tadka)", "Curries", "Soups", "Chutneys"]
   },
   {
     "id": "ING_014",
@@ -166,7 +218,11 @@
     "notes": "Earthy, Sour, Fruity, Caramel. Sour, Sweet, Savory.",
     "origin": "Africa / India",
     "seasonality": "Varies",
-    "state": "processed"
+    "state": "processed",
+    "key_compounds": ["Tartaric Acid", "Polyphenols"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Chutneys", "Curries", "Beverages", "Sauces (Pad Thai)"]
   },
   {
     "id": "ING_015",
@@ -178,7 +234,11 @@
     "notes": "Floral, Spicy, Citrus, Eucalyptus. Cooling, Sweet, Pungent.",
     "origin": "India / Guatemala",
     "seasonality": "Year-round",
-    "state": "dried"
+    "state": "dried",
+    "key_compounds": ["Cineole", "Terpinyl acetate"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Baking", "Coffee/Tea", "Curries", "Desserts"]
   },
   {
     "id": "ING_016",
@@ -190,7 +250,11 @@
     "notes": "Spicy, Woody, Piney, Sharp. Hot, Pungent, Bitter.",
     "origin": "India (Malabar)",
     "seasonality": "Year-round",
-    "state": "dried"
+    "state": "dried",
+    "key_compounds": ["Piperine"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Seasoning (Universal)", "Sauces", "Rubs"]
   },
   {
     "id": "ING_017",
@@ -202,7 +266,11 @@
     "notes": "Sweet, Creamy, Woody, Balsamic. Sweet, Smooth.",
     "origin": "Madagascar",
     "seasonality": "Varies",
-    "state": "cured"
+    "state": "cured",
+    "key_compounds": ["Vanillin"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Baking", "Desserts", "Infusions", "Beverages"]
   },
   {
     "id": "ING_018",
@@ -214,7 +282,11 @@
     "notes": "Peppery, Anise, Green, Clove. Sweet, Pungent, Herbal.",
     "origin": "Italy / India",
     "seasonality": "Summer",
-    "state": "fresh"
+    "state": "fresh",
+    "key_compounds": ["Linalool", "Eugenol"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Pesto", "Salads", "Sauces", "Garnish"]
   },
   {
     "id": "ING_019",
@@ -226,7 +298,11 @@
     "notes": "Green, Fruity, Sharp, Estery. Sour, Sweet, Crisp.",
     "origin": "Global",
     "seasonality": "Autumn",
-    "state": "fresh"
+    "state": "fresh",
+    "key_compounds": ["Malic Acid", "Fiber", "Quercetin"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Baking (Pies)", "Salads", "Juices", "Sauces"]
   },
   {
     "id": "ING_020",
@@ -238,7 +314,11 @@
     "notes": "Floral, Wax, Animalic, Sweet. Sweet, Viscous, Floral.",
     "origin": "Global",
     "seasonality": "Varies",
-    "state": "processed"
+    "state": "processed",
+    "key_compounds": ["Fructose", "Glucose", "Enzymes"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Sweetener", "Glazes", "Dressings", "Beverages"]
   },
   {
     "id": "ING_021",
@@ -250,7 +330,11 @@
     "notes": "Citrus, Sweet, Wax, Floral. Sweet, Sour.",
     "origin": "China / Global",
     "seasonality": "Varies",
-    "state": "fresh"
+    "state": "fresh",
+    "key_compounds": ["Vitamin C", "Hesperidin"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Juices", "Garnish", "Zest (Baking)", "Marinades"]
   },
   {
     "id": "ING_022",
@@ -262,7 +346,11 @@
     "notes": "Sulfur, Citrus, Bitter, Floral. Sour, Bitter, Sweet.",
     "origin": "Barbados",
     "seasonality": "Winter",
-    "state": "fresh"
+    "state": "fresh",
+    "key_compounds": ["Vitamin C", "Lycopene", "Naringin"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Breakfast", "Juices", "Cocktails", "Salads"]
   },
   {
     "id": "ING_023",
@@ -274,7 +362,11 @@
     "notes": "Warm, Spicy, Sweet, Woody. Sweet, Hot, Woody.",
     "origin": "China / Indonesia",
     "seasonality": "Year-round",
-    "state": "dried"
+    "state": "dried",
+    "key_compounds": ["Cinnamaldehyde", "Coumarin"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Baking", "Beverages", "Curries", "Garnish"]
   },
   {
     "id": "ING_024",
@@ -286,7 +378,11 @@
     "notes": "Medicinal, Spicy, Sweet, Woody. Numbing, Bitter, Hot.",
     "origin": "Indonesia",
     "seasonality": "Year-round",
-    "state": "dried"
+    "state": "dried",
+    "key_compounds": ["Eugenol"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Baking", "Mulled Drinks", "Pickling", "Curries"]
   },
   {
     "id": "ING_025",
@@ -298,7 +394,11 @@
     "notes": "Licorice, Sweet, Herbal, Medicinal. Sweet, Bitter, Cooling.",
     "origin": "Vietnam / China",
     "seasonality": "Year-round",
-    "state": "dried"
+    "state": "dried",
+    "key_compounds": ["Anethole", "Shikimic Acid"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Braising (Pho)", "Mulled Drinks", "Curries", "Baking"]
   },
   {
     "id": "ING_026",
@@ -310,7 +410,11 @@
     "notes": "Woody, Warm, Piney, Sweet. Nutty, Sweet, Bitter.",
     "origin": "Indonesia",
     "seasonality": "Year-round",
-    "state": "dried"
+    "state": "dried",
+    "key_compounds": ["Myristicin", "Sabinene"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Baking", "Cream Sauces", "Beverages (Eggnog)"]
   },
   {
     "id": "ING_027",
@@ -322,7 +426,11 @@
     "notes": "Nutty, Marzipan, Cherry-like, Sweet. Sweet, Milky, Fatty.",
     "origin": "USA / Global",
     "seasonality": "Year-round",
-    "state": "dried"
+    "state": "dried",
+    "key_compounds": ["Vitamin E", "Magnesium", "Amygdalin"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Baking", "Snacks", "Milk", "Garnish"]
   },
   {
     "id": "ING_028",
@@ -334,7 +442,11 @@
     "notes": "Green, Vegetal, Spicy, Earthy. Hot, Grassy, Slightly Sweet.",
     "origin": "Mexico",
     "seasonality": "Summer",
-    "state": "fresh"
+    "state": "fresh",
+    "key_compounds": ["Capsaicin", "Vitamin C"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Salsas", "Pickling", "Stuffed", "Garnish"]
   },
   {
     "id": "ING_029",
@@ -346,7 +458,11 @@
     "notes": "Neutral, Medicinal, Ethanol. Burning, Neutral, Sweet (Grain).",
     "origin": "Poland / Russia",
     "seasonality": "Year-round",
-    "state": "processed"
+    "state": "processed",
+    "key_compounds": ["Ethanol"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Cocktails", "Tinctures", "Sauces (Penne alla Vodka)"]
   },
   {
     "id": "ING_030",
@@ -358,7 +474,11 @@
     "notes": "Piney, Citrus, Floral, Spicy. Dry, Herbal, Bitter finish.",
     "origin": "UK / Global",
     "seasonality": "Year-round",
-    "state": "processed"
+    "state": "processed",
+    "key_compounds": ["Juniper", "Coriander", "Angelica Root"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Cocktails (Gin & Tonic)", "Marinades"]
   },
   {
     "id": "ING_031",
@@ -370,7 +490,11 @@
     "notes": "Sweet, Fruity, Banana, Ethanol. Sweet perception, Dry finish.",
     "origin": "Caribbean",
     "seasonality": "Year-round",
-    "state": "processed"
+    "state": "processed",
+    "key_compounds": ["Ethanol", "Esters"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Cocktails", "Baking", "Desserts (Flambé)"]
   },
   {
     "id": "ING_032",
@@ -382,7 +506,11 @@
     "notes": "Vanilla, Caramel, Oak, Corn. Sweet, Woody, Spicy.",
     "origin": "USA (Kentucky)",
     "seasonality": "Year-round",
-    "state": "processed"
+    "state": "processed",
+    "key_compounds": ["Vanillin", "Lactones", "Tannins"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Cocktails (Old Fashioned)", "Glazes", "Sauces"]
   },
   {
     "id": "ING_033",
@@ -394,7 +522,11 @@
     "notes": "Green, Earthy, Peppery, Citrus. Vegetal, Sweet, Spicy.",
     "origin": "Mexico (Jalisco)",
     "seasonality": "Year-round",
-    "state": "processed"
+    "state": "processed",
+    "key_compounds": ["Agave Terpenes"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Cocktails (Margarita)", "Marinades"]
   },
   {
     "id": "ING_034",
@@ -406,7 +538,11 @@
     "notes": "Spicy, Medicinal, Woody, Citrus. Bitter, Spicy, Savory.",
     "origin": "Trinidad",
     "seasonality": "Year-round",
-    "state": "processed"
+    "state": "processed",
+    "key_compounds": ["Gentian", "Cinchona"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Cocktails", "Sauces"]
   },
   {
     "id": "ING_035",
@@ -418,7 +554,11 @@
     "notes": "Neutral, Sweet. Pure Sweetness.",
     "origin": "Global",
     "seasonality": "Year-round",
-    "state": "processed"
+    "state": "processed",
+    "key_compounds": ["Sucrose"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Sweetener (Universal)", "Baking", "Syrups"]
   },
   {
     "id": "ING_036",
@@ -430,7 +570,11 @@
     "notes": "Earthy, Caramel, Molasses, Winey. Sweet, Mineral, Savory.",
     "origin": "India",
     "seasonality": "Year-round",
-    "state": "processed"
+    "state": "processed",
+    "key_compounds": ["Sucrose", "Molasses", "Minerals"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Sweetener (Traditional)", "Desserts", "Sauces"]
   },
   {
     "id": "ING_037",
@@ -442,7 +586,11 @@
     "notes": "Neutral, Faintly Sulfurous. Neutral, Saline.",
     "origin": "Global",
     "seasonality": "Year-round",
-    "state": "fresh"
+    "state": "fresh",
+    "key_compounds": ["Albumin"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Foams (Cocktails)", "Baking (Meringue)", "Binding"]
   },
   {
     "id": "ING_038",
@@ -454,7 +602,11 @@
     "notes": "Milky, Creamy, Sweet, Animalic. Sweet, Fatty, Neutral.",
     "origin": "Global",
     "seasonality": "Year-round",
-    "state": "fresh"
+    "state": "fresh",
+    "key_compounds": ["Lactose", "Casein", "Calcium"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Beverages", "Baking", "Sauces", "Cheese Making"]
   },
   {
     "id": "ING_039",
@@ -466,7 +618,11 @@
     "notes": "Ocean, Iodine. Salty.",
     "origin": "Global",
     "seasonality": "Year-round",
-    "state": "processed"
+    "state": "processed",
+    "key_compounds": ["Sodium Chloride", "Trace Minerals"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Seasoning (Universal)", "Curing", "Finishing"]
   },
   {
     "id": "ING_040",
@@ -478,6 +634,138 @@
     "notes": "Earthy, Mustard, Ginger, Pepper. Bitter, Earthy, Warm.",
     "origin": "India",
     "seasonality": "Varies",
-    "state": "fresh"
+    "state": "fresh",
+    "key_compounds": ["Curcumin"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Curries", "Beverages (Golden Milk)", "Coloring", "Pickling"]
+  },
+  {
+    "id": "ING_041",
+    "name": "Beetroot",
+    "type": "vegetable",
+    "subcategory": "root",
+    "archetype": "Earthy Sweet",
+    "dna": { "acids": 1, "sugars": 7, "bitterness": 2, "aromatics": 4, "aldehydes": 0, "esters": 0, "umami": 2, "texture": 8, "water_content": 9 },
+    "notes": "Earthy, Sweet, Mineral. Sweet, Vegetal.",
+    "origin": "Global",
+    "seasonality": "Year-round",
+    "state": "fresh",
+    "key_compounds": ["Geosmin", "Betanin", "Nitrates"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Salads", "Juices", "Roasting", "Soups"]
+  },
+  {
+    "id": "ING_042",
+    "name": "Saffron",
+    "type": "spice",
+    "subcategory": "stigma",
+    "archetype": "Floral Aromatic",
+    "dna": { "acids": 0, "sugars": 1, "bitterness": 6, "aromatics": 10, "aldehydes": 0, "esters": 7, "umami": 1, "texture": 1, "water_content": 1 },
+    "notes": "Floral, Hay-like, Honey, Metallic. Bitter, Luxurious.",
+    "origin": "Iran / Spain",
+    "seasonality": "Autumn",
+    "state": "dried",
+    "key_compounds": ["Crocin", "Picrocrocin", "Safranal"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Rice (Paella, Biryani)", "Desserts", "Stews", "Infusions"]
+  },
+  {
+    "id": "ING_043",
+    "name": "Yuzu",
+    "type": "fruit",
+    "subcategory": "citrus",
+    "archetype": "Aromatic Sour",
+    "dna": { "acids": 9, "sugars": 3, "bitterness": 5, "aromatics": 10, "aldehydes": 8, "esters": 8, "umami": 0, "texture": 5, "water_content": 8 },
+    "notes": "Floral, Grapefruit, Mandarin Orange. Very Sour, Aromatic, slightly Bitter.",
+    "origin": "Japan / Korea",
+    "seasonality": "Winter",
+    "state": "fresh",
+    "key_compounds": ["Yuzunone", "Limonene", "Vitamin C"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Sauces (Ponzu)", "Vinaigrettes", "Cocktails", "Desserts"]
+  },
+  {
+    "id": "ING_044",
+    "name": "Shiitake Mushroom",
+    "type": "fungus",
+    "subcategory": "mushroom",
+    "archetype": "Umami Bomb",
+    "dna": { "acids": 1, "sugars": 2, "bitterness": 2, "aromatics": 7, "aldehydes": 0, "esters": 0, "umami": 10, "texture": 7, "water_content": 8 },
+    "notes": "Earthy, Smoky, Meaty, Savory. Umami, Rich, Woody.",
+    "origin": "East Asia",
+    "seasonality": "Year-round",
+    "state": "fresh/dried",
+    "key_compounds": ["Lentinan", "Eritadenine", "Guanylate"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Stir-fries", "Soups", "Stocks", "Sautéing"]
+  },
+  {
+    "id": "ING_045",
+    "name": "Passion Fruit",
+    "type": "fruit",
+    "subcategory": "tropical",
+    "archetype": "Astringent Sour",
+    "dna": { "acids": 9, "sugars": 6, "bitterness": 2, "aromatics": 9, "aldehydes": 8, "esters": 9, "umami": 1, "texture": 4, "water_content": 8 },
+    "notes": "Tropical, Tart, Floral, Guava-like. Sour, Sweet, Aromatic.",
+    "origin": "South America",
+    "seasonality": "Varies",
+    "state": "fresh",
+    "key_compounds": ["Vitamin C", "Vitamin A", "Passiflorin"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Desserts", "Beverages", "Sauces", "Yogurt topping"]
+  },
+  {
+    "id": "ING_046",
+    "name": "Pistachio",
+    "type": "nut",
+    "subcategory": "seed",
+    "archetype": "Creamy Neutral",
+    "dna": { "acids": 1, "sugars": 4, "bitterness": 1, "aromatics": 7, "aldehydes": 0, "esters": 0, "umami": 2, "texture": 9, "water_content": 0 },
+    "notes": "Nutty, Buttery, slightly Sweet, Earthy. Sweet, Fatty, Rich.",
+    "origin": "Middle East / Central Asia",
+    "seasonality": "Year-round",
+    "state": "dried",
+    "key_compounds": ["Lutein", "Zeaxanthin", "Healthy Fats"],
+    "potential_contaminants": ["Aflatoxins"],
+    "preservatives": [],
+    "culinary_applications": ["Desserts (Baklava, Ice Cream)", "Snacks", "Crusting for meats", "Salads"]
+  },
+  {
+    "id": "ING_047",
+    "name": "Fennel",
+    "type": "vegetable",
+    "subcategory": "bulb",
+    "archetype": "Aromatic Bitter Leaf",
+    "dna": { "acids": 1, "sugars": 3, "bitterness": 3, "aromatics": 8, "aldehydes": 0, "esters": 7, "umami": 1, "texture": 9, "water_content": 9 },
+    "notes": "Anise, Licorice, Green, Fresh. Crunchy, slightly Sweet, Herbal.",
+    "origin": "Mediterranean",
+    "seasonality": "Autumn to Spring",
+    "state": "fresh",
+    "key_compounds": ["Anethole", "Fenchone"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Salads", "Roasting", "Braising", "Soups"]
+  },
+  {
+    "id": "ING_048",
+    "name": "White Chocolate",
+    "type": "fat",
+    "subcategory": "confectionery",
+    "archetype": "Sweet Aromatic",
+    "dna": { "acids": 1, "sugars": 9, "bitterness": 0, "aromatics": 6, "aldehydes": 0, "esters": 0, "umami": 1, "texture": 2, "water_content": 0 },
+    "notes": "Creamy, Milky, Vanilla, Sweet. Very Sweet, Fatty, Smooth.",
+    "origin": "Global",
+    "seasonality": "Year-round",
+    "state": "processed",
+    "key_compounds": ["Cocoa Butter", "Sugar", "Milk Solids"],
+    "potential_contaminants": [],
+    "preservatives": [],
+    "culinary_applications": ["Desserts", "Baking", "Ganache", "Mousses"]
   }
 ]

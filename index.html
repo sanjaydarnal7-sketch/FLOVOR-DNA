@@ -8,10 +8,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
       :root {
-        --font-sans: 'Space Grotesk', sans-serif;
+        --font-display: 'Space Grotesk', sans-serif;
+        --font-sans: 'Inter', sans-serif;
         --font-mono: 'IBM Plex Mono', monospace;
 
         /* Theme colors */
@@ -29,6 +30,7 @@
         font-family: var(--font-sans);
         background-color: #020617; /* Slate 950 */
       }
+      .font-display { font-family: var(--font-display); }
       .font-sans { font-family: var(--font-sans); }
       .font-mono { font-family: var(--font-mono); }
       
@@ -69,6 +71,24 @@
         --primary-400: var(--flavour-400);
         --primary-500: var(--flavour-500);
         --primary-glow: var(--flavour-glow);
+      }
+
+      @keyframes highlight-new-item {
+        from { background-color: var(--primary-400, theme(colors.slate.600)); }
+        to { background-color: transparent; }
+      }
+      .animate-highlight {
+        animation: highlight-new-item 1.5s ease-out;
+      }
+
+      /* Enhanced UI styles */
+      .interactive-card {
+        transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, border-color 0.2s ease-out;
+      }
+      .interactive-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3), 0 8px 10px -6px rgba(0,0,0,0.2);
+        border-color: var(--primary-400, theme(colors.slate.600));
       }
     </style>
   <script type="importmap">

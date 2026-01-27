@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Component, Descriptor } from './types';
 
@@ -164,11 +165,38 @@ export const FlavourIcon = (props: React.SVGProps<SVGSVGElement>) => (
     </svg>
 );
 
+export const BeakerIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.25h13.5m-13.5 0a2.25 2.25 0 012.25-2.25h9a2.25 2.25 0 012.25 2.25m-13.5 0v11.25a2.25 2.25 0 002.25 2.25h9a2.25 2.25 0 002.25-2.25V5.25" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 12.75h13.5" />
+    </svg>
+);
+
+
 export const MoleculeIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
       <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 4.5c0-1.242.986-2.25 2.25-2.25s2.25.958 2.25 2.25c0 1.242-.986 2.25-2.25 2.25S11.25 5.742 11.25 4.5zM15.75 12c0-1.242.986-2.25 2.25-2.25s2.25.958 2.25 2.25c0 1.242-.986 2.25-2.25 2.25s-2.25-.958-2.25-2.25z" />
       <path strokeLinecap="round" strokeLinejoin="round" d="M6 19.5c0-1.242.986-2.25 2.25-2.25s2.25.958 2.25 2.25c0 1.242-.986 2.25-2.25 2.25S6 20.742 6 19.5z" />
       <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 17.25L13.5 9M15.75 6.75l-2.25 2.25" />
+    </svg>
+);
+
+export const FlaskIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 21l-.94-2.821a3.75 3.75 0 01-.14-1.402V8.25a3.75 3.75 0 013.75-3.75h.038a3.75 3.75 0 013.712 3.712v8.527a3.75 3.75 0 01-.14 1.402L13.5 21m-3 0h3m-3.75-6.75h4.5" />
+    </svg>
+);
+
+export const ClipboardListIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+    </svg>
+);
+
+export const FishIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" {...props}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12.75 12.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M16.19 14.898c-.463.38-1.002.66-1.59.832L17.5 19.5h-1.5L13.12 16.5A6.98 6.98 0 0112 16.5c-1.39 0-2.686-.39-3.79-1.07l-2.88 2.97h-1.5l2.892-3.77a7.023 7.023 0 01-1.59-.832C3.12 13.684 2.25 12.03 2.25 10.125c0-3.313 4.36-6 9.75-6s9.75 2.687 9.75 6c0 1.905-.87 3.559-2.31 4.773z" />
     </svg>
 );
 
@@ -189,4 +217,22 @@ export const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" {...props}>
         <path d="M21.35,11.1H12.18V13.83H18.67C18.36,17.64 15.19,19.27 12.19,19.27C8.36,19.27 5,16.25 5,12C5,7.9 8.2,4.73 12.18,4.73C15.29,4.73 17.1,6.7 17.1,6.7L19,4.72C19,4.72 16.56,2 12.18,2C6.42,2 2.03,6.8 2.03,12C2.03,17.05 6.16,22 12.18,22C17.6,22 21.54,18.33 21.54,12.81C21.54,11.9 21.45,11.49 21.35,11.1Z" />
     </svg>
+);
+
+export const LoadIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0011.667 0l3.181-3.183m-4.991-2.696L7.985 5.28m-4.992 0h4.992m-4.993 0l3.181-3.183a8.25 8.25 0 011.667 0l3.181 3.183" />
+    </svg>
+);
+
+export const ArrowRightIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+    </svg>
+);
+
+export const ListBulletIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 17.25h.007v.008H3.75v-1.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+  </svg>
 );

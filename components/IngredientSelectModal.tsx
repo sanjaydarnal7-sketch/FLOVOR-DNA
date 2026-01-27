@@ -29,19 +29,19 @@ const IngredientSelectModal: React.FC<IngredientSelectModalProps> = ({ isOpen, o
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in" onClick={onClose}>
       <GlassmorphicCard className="w-full max-w-md max-h-[80vh] flex flex-col" onClick={handleModalContentClick}>
         <div className="p-4 border-b border-slate-800">
-            <h2 className="text-xl font-bold text-gray-100">Add Ingredient to Blend</h2>
+            <h2 className="text-xl font-bold text-gray-100 uppercase tracking-wider">Add Ingredient to Blend</h2>
             <input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search ingredients..."
-                className="w-full bg-slate-800/60 border border-slate-700 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400 mt-4"
+                className="w-full bg-slate-800 border border-slate-700 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400 mt-4"
                 autoFocus
             />
             <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full bg-slate-800/60 border border-slate-700 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400 mt-2 capitalize"
+                className="w-full bg-slate-800 border border-slate-700 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400 mt-2 capitalize"
             >
                 <option value="">All Categories</option>
                 {categories.map(category => (
@@ -56,7 +56,7 @@ const IngredientSelectModal: React.FC<IngredientSelectModalProps> = ({ isOpen, o
                         <li key={ingredient.id}>
                             <button
                                 onClick={() => onSelect(ingredient)}
-                                className="w-full text-left p-3 rounded-lg bg-slate-800/50 hover:bg-indigo-400/10 hover:border-indigo-400 border border-transparent transition-all"
+                                className="w-full text-left p-3 rounded-lg bg-slate-800 hover:bg-indigo-400/10 hover:border-indigo-400 border border-transparent transition-all"
                             >
                                 <p className="font-semibold text-indigo-300">{ingredient.name}</p>
                                 <p className="text-xs text-gray-400">{ingredient.notes.split('.')[0]}</p>
